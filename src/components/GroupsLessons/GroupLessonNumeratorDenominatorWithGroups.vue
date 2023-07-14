@@ -5,11 +5,17 @@
     </td>
     <td>
       <span class="lesson-name">
-        {{ lesson[0].lesson_title }} 
-        <template v-if="lesson[0].lesson_type">
-          ({{ lesson[0].lesson_type }})
-        </template>
-        <p class="line-break">{{ lesson[0].first_group?'первая подгруппа':lesson[0].second_group?'вторая подгруппа':'' }}</p>
+        {{ lesson[0].lesson_title }}
+        <template v-if="lesson[0].lesson_type"> ({{ lesson[0].lesson_type }}) </template>
+        <p class="line-break">
+          {{
+            lesson[0].first_group
+              ? 'первая подгруппа'
+              : lesson[0].second_group
+              ? 'вторая подгруппа'
+              : ''
+          }}
+        </p>
       </span>
       <p class="teacher-name line-break">
         {{ lesson[0].teacher_name }}
@@ -20,11 +26,17 @@
     </td> -->
     <td>
       <span class="lesson-name">
-        {{ lesson[1].lesson_title }} 
-        <template v-if="lesson[1].lesson_type">
-          ({{ lesson[1].lesson_type }})
-        </template>
-        <p class="line-break">{{ lesson[1].first_group?'первая подгруппа':lesson[1].second_group?'вторая подгруппа':'' }}</p>
+        {{ lesson[1].lesson_title }}
+        <template v-if="lesson[1].lesson_type"> ({{ lesson[1].lesson_type }}) </template>
+        <p class="line-break">
+          {{
+            lesson[1].first_group
+              ? 'первая подгруппа'
+              : lesson[1].second_group
+              ? 'вторая подгруппа'
+              : ''
+          }}
+        </p>
       </span>
       <p class="teacher-name line-break">
         {{ lesson[1].teacher_name }}
@@ -37,11 +49,17 @@
   <tr>
     <td>
       <span class="lesson-name">
-        {{ lesson[2].lesson_title }} 
-        <template v-if="lesson[2].lesson_type">
-          ({{ lesson[2].lesson_type }})
-        </template>
-        <p class="line-break">{{ lesson[2].first_group?'первая подгруппа':lesson[1].second_group?'вторая подгруппа':'' }}</p>
+        {{ lesson[2].lesson_title }}
+        <template v-if="lesson[2].lesson_type"> ({{ lesson[2].lesson_type }}) </template>
+        <p class="line-break">
+          {{
+            lesson[2].first_group
+              ? 'первая подгруппа'
+              : lesson[1].second_group
+              ? 'вторая подгруппа'
+              : ''
+          }}
+        </p>
       </span>
       <p class="teacher-name line-break">
         {{ lesson[2].teacher_name }}
@@ -50,14 +68,20 @@
     <!-- <td>
       {{ lesson[2].room_number?lesson[2].room_number:'' }}
     </td> -->
-              
+
     <td>
       <span class="lesson-name">
-        {{ lesson[3].lesson_title }} 
-        <template v-if="lesson[3].lesson_type">
-          ({{ lesson[3].lesson_type }})
-        </template>
-        <p class="line-break">{{ lesson[3].first_group?'первая подгруппа':lesson[3].second_group?'вторая подгруппа':'' }}</p>
+        {{ lesson[3].lesson_title }}
+        <template v-if="lesson[3].lesson_type"> ({{ lesson[3].lesson_type }}) </template>
+        <p class="line-break">
+          {{
+            lesson[3].first_group
+              ? 'первая подгруппа'
+              : lesson[3].second_group
+              ? 'вторая подгруппа'
+              : ''
+          }}
+        </p>
       </span>
       <p class="teacher-name line-break">
         {{ lesson[3].teacher_name }}
@@ -68,29 +92,29 @@
     </td> -->
   </tr>
 </template>
-  <script>
-  export default {
-      name: 'GroupLessonNumeratorDenominatorWithGroups',
-      props: {
-          lesson: {
-            type: Array,
-            default() {
-              return []
-            }
-          },
-          lessonNumber: {
-            type: Number,
-            default: 0,
-          },
-          day: {
-            type: String,
-            default: '',
-          },
-          isAdmin: {
-            type: Boolean,
-            default: false,
-          }, 
-      },
-      emits: ['dltLesson']
-  }
-  </script>
+<script>
+export default {
+  name: 'GroupLessonNumeratorDenominatorWithGroups',
+  props: {
+    lesson: {
+      type: Array,
+      default() {
+        return []
+      }
+    },
+    lessonNumber: {
+      type: Number,
+      default: 0
+    },
+    day: {
+      type: String,
+      default: ''
+    },
+    isAdmin: {
+      type: Boolean,
+      default: false
+    }
+  },
+  emits: ['dltLesson']
+}
+</script>

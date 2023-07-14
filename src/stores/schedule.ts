@@ -27,8 +27,6 @@ export const useScheduleStore = defineStore('schedule', {
       teachersLessons: [],
       groupsLessons: [],
       searchTerm: ''
-      // searchedGroups: [],
-      // searchedTeachers: [],
     }
   },
 
@@ -43,6 +41,7 @@ export const useScheduleStore = defineStore('schedule', {
     },
 
     searchedGroups(state): { faculty: string; group_name: string }[] {
+      console.log(state.groups)
       if (state.searchTerm === '') {
         return []
       }

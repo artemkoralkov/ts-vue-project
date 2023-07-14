@@ -2,10 +2,15 @@
 import { defineComponent } from 'vue'
 import { useScheduleStore } from '@/stores/schedule'
 import GroupsLessonsTable from '@/components/GroupsLessons/GroupsLessonsTable.vue'
+import TeachersLessonsTable from '@/components/TeacherLessons/TeachersLessonsTable.vue'
+import TopBar from '@/components/TopBar.vue'
 import { getTypeOfTheWeek } from '@/utils'
+
 export default defineComponent({
   components: {
-    GroupsLessonsTable
+    GroupsLessonsTable,
+    TeachersLessonsTable,
+    TopBar
   },
   data() {
     return {
@@ -21,113 +26,29 @@ export default defineComponent({
 
 <template>
   <div class="container">
-    <header class="top-bar">
-      <select
-        v-model="schedule.selectedFaculty"
-        class="faculty-selection"
-        @change="schedule.selectFaculty"
-      >
-        <option disabled value="">Выберите факультет</option>
-        <option v-for="faculty in Object.keys(schedule.FACULTIES)" :key="faculty">
-          {{ faculty }}
-        </option>
-      </select>
-      <template v-if="schedule.selectedFaculty">
-        <div class="form__radio">
-          <input
-            id="teachers-radiobutton"
-            v-model="schedule.selectedList"
-            class="row-radio"
-            type="radio"
-            value="Преподаватели"
-            @change="clearSelectedGroup"
-          />
-          <label class="radio-btn-text" for="teachers-radiobutton"> Преподаватели </label>
-
-          <input
-            id="groups-radiobutton"
-            v-model="schedule.selectedList"
-            class="row-radio"
-            type="radio"
-            value="Группы"
-            @change="clearSelectedTeacher"
-          />
-          <label for="groups-radiobutton" class="radio-btn-text"> Группы </label>
-        </div>
-      </template>
-      <template v-if="schedule.selectedList === 'Преподаватели'">
-        <!-- <AutoComplete 
-            v-model="schedule.searchTerm"
-            :suggestions="schedule.searchedTeachers"
-            :placeholder="'Преподаватель'"
-            @complete="schedule.search()"
-            @item-select="OnSelectTeacher"
-          /> -->
-        <input
-          id="search"
-          v-model="schedule.searchTerm"
-          type="text"
-          placeholder="Преподаватель"
-          autocomplete="off"
-        />
-        <div class="listWrapper">
-          <ul v-if="schedule.searchTerm">
-            <li
-              v-for="teacher in schedule.searchedTeachers"
-              :key="teacher"
-              @click="schedule.selectTeacher(teacher.teacher_name)"
-            >
-              {{ teacher.teacher_name }}
-            </li>
-            <li v-if="schedule.searchTerm !== '' && schedule.searchedTeachers.length === 0">
-              Ничего не найдно
-            </li>
-          </ul>
-        </div>
-      </template>
-      <template v-else-if="schedule.selectedList === 'Группы'">
-        <input
-          id="search"
-          v-model="schedule.searchTerm"
-          type="text"
-          placeholder="Группа"
-          autocomplete="off"
-        />
-        <div class="listWrapper">
-          <ul v-if="schedule.searchTerm">
-            <li
-              v-for="group in schedule.searchedGroups"
-              :key="group"
-              @click="schedule.selectGroup(group.group_name)"
-            >
-              {{ group.group_name }}
-            </li>
-            <li v-if="schedule.searchTerm !== '' && schedule.searchedGroups.length === 0">
-              Ничего не найдно
-            </li>
-          </ul>
-        </div>
-      </template>
+    <TopBar />
+    <div class="schedule-table">
       <template v-if="schedule.selectedGroup">
-        <h1 class="centred-text">
-          {{ schedule.selectedGroup }}
-        </h1>
-        <h3 class="centred-text">
-          {{ typeOfTheWeek }}
-        </h3>
-      </template>
-    </header>
-
-    <template v-if="schedule.selectedGroup">
-      <div class="schedule-table">
         <GroupsLessonsTable :lessons="schedule.groupsLessons" :faculty="schedule.selectedFaculty" />
-      </div>
-    </template>
-    <template v-if="schedule.selectedTeacher"></template>
+      </template>
+      <template v-if="schedule.selectedTeacher">
+        <TeachersLessonsTable
+          :lessons="schedule.teachersLessons"
+          :faculty="schedule.selectedFaculty"
+        />
+      </template>
+    </div>
   </div>
 </template>
 
 <style lang="scss">
+input,
+textarea,
+select,
+button {
+  font: inherit;
+}
+
 .lesson-number {
   @media screen {
     font-size: 200%;
@@ -149,6 +70,7 @@ export default defineComponent({
     font-size: 80%;
   }
 }
+
 .top-bar {
   position: sticky;
   top: 0;
@@ -172,6 +94,7 @@ li {
   max-height: 100px;
   overflow-y: auto;
   text-align: center;
+  color: white;
 }
 
 .listWrapper li:hover {
@@ -204,6 +127,7 @@ li {
 .row-radio {
   margin-left: 10px;
 }
+
 table {
   border-collapse: collapse;
   width: 100%;
@@ -246,7 +170,7 @@ td {
 
 .faculty-selection {
   margin-bottom: 10px;
-  width: 10%;
+  width: 12%;
   height: 30px;
   min-width: 140px;
   font-size: medium;
