@@ -1,3 +1,29 @@
+<script lang="ts">
+import { defineComponent } from 'vue'
+import type { PropType } from 'vue'
+export default defineComponent({
+  name: 'GroupLessonFirstGroupDenominatorSecondGroupDenominator',
+  props: {
+    lesson: {
+      type: Array as PropType<Lesson[]>,
+      required: true
+    },
+    lessonNumber: {
+      type: Number,
+      default: 0
+    },
+    day: {
+      type: String,
+      default: ''
+    },
+    isAdmin: {
+      type: Boolean,
+      default: false
+    }
+  },
+  emits: ['dltLesson', 'editLesson', 'addLesson']
+})
+</script>
 <template>
   <tr>
     <td rowspan="2">
@@ -64,37 +90,10 @@
     </td> -->
     <template v-if="isAdmin">
       <td>
-        <button class="button" @click="$emit('dltLesson', lesson[0].id, day, lessonNumber)">
+        <button class="button" @click="$emit('dltLesson', lesson[1].id, day, lessonNumber)">
           <span class="material-icons">delete</span>
         </button>
       </td>
     </template>
   </tr>
 </template>
-
-<script>
-export default {
-  name: 'GroupLessonFirstGroupDenominatorSecondGroupDenominator',
-  props: {
-    lesson: {
-      type: Object,
-      default() {
-        return {}
-      }
-    },
-    lessonNumber: {
-      type: Number,
-      default: 0
-    },
-    day: {
-      type: String,
-      default: ''
-    },
-    isAdmin: {
-      type: Boolean,
-      default: false
-    }
-  },
-  emits: ['dltLesson', 'editLesson', 'addLesson']
-}
-</script>

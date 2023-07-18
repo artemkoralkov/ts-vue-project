@@ -1,3 +1,30 @@
+<script lang="ts">
+import { defineComponent } from 'vue'
+import type { PropType } from 'vue'
+
+export default defineComponent({
+  name: 'GroupLessonNumerator',
+  props: {
+    lesson: {
+      type: Object as PropType<Lesson>,
+      required: true
+    },
+    lessonNumber: {
+      type: Number,
+      default: 0
+    },
+    day: {
+      type: String,
+      default: ''
+    },
+    isAdmin: {
+      type: Boolean,
+      default: false
+    }
+  },
+  emits: ['editLesson', 'dltLesson', 'addLesson']
+})
+</script>
 <template>
   <tr>
     <td rowspan="2">
@@ -45,30 +72,3 @@
     </td>
   </tr>
 </template>
-
-<script>
-export default {
-  name: 'GroupLessonNumerator',
-  props: {
-    lesson: {
-      type: Object,
-      default() {
-        return {}
-      }
-    },
-    lessonNumber: {
-      type: Number,
-      default: 0
-    },
-    day: {
-      type: String,
-      default: ''
-    },
-    isAdmin: {
-      type: Boolean,
-      default: false
-    }
-  },
-  emits: ['editLesson', 'dltLesson', 'addLesson']
-}
-</script>

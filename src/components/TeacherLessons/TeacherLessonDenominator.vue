@@ -1,3 +1,30 @@
+<script lang="ts">
+import { defineComponent } from 'vue'
+import type { PropType } from 'vue'
+export default defineComponent({
+  name: 'TeacherLessonDenominator',
+  props: {
+    lesson: {
+      type: Object as PropType<Lesson>,
+      required: true
+    },
+    lessonNumber: {
+      type: Number,
+      default: 0
+    },
+    dayName: {
+      type: String,
+      default: ''
+    },
+    isAdmin: {
+      type: Boolean,
+      default: false
+    }
+  },
+  emits: ['dltLesson', 'addLesson', 'editLesson']
+})
+</script>
+
 <template>
   <tr>
     <td class="lesson-number" rowspan="2">
@@ -41,30 +68,3 @@
     </template>
   </tr>
 </template>
-
-<script lang="ts">
-import { defineComponent } from 'vue'
-import type { PropType } from 'vue'
-export default defineComponent({
-  name: 'TeacherLessonDenominator',
-  props: {
-    lesson: {
-      type: Object as PropType<Lesson>,
-      required: true
-    },
-    lessonNumber: {
-      type: Number,
-      default: 0
-    },
-    dayName: {
-      type: String,
-      default: ''
-    },
-    isAdmin: {
-      type: Boolean,
-      default: false
-    }
-  },
-  emits: ['dltLesson', 'addLesson', 'editLesson']
-})
-</script>

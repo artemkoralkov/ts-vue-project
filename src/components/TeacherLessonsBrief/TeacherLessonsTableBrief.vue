@@ -1,3 +1,26 @@
+<script lang="ts">
+import getDateAndDay from '@/utils/getDateAndDay'
+import { defineComponent, PropType } from 'vue'
+export default defineComponent({
+  name: 'TeacherLessonsTableBrief',
+  props: {
+    lessons: {
+      type: Object as PropType<Lessons>,
+      required: true
+    },
+    faculty: {
+      type: String,
+      default: ''
+    }
+  },
+  data() {
+    return {
+      daysAndDates: getDateAndDay(),
+      briefRusDayNames: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб']
+    }
+  }
+})
+</script>
 <template>
   <template v-if="lessons">
     <table class="table-brief">
@@ -45,31 +68,6 @@
     </table>
   </template>
 </template>
-<script>
-import getDateAndDay from '@/utils/getDateAndDay'
-export default {
-  name: 'TeacherLessonsTableBrief',
-
-  props: {
-    lessons: {
-      type: Object,
-      default() {
-        return {}
-      }
-    },
-    faculty: {
-      type: String,
-      default: ''
-    }
-  },
-  data() {
-    return {
-      daysAndDates: getDateAndDay(),
-      briefRusDayNames: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб']
-    }
-  }
-}
-</script>
 <style>
 /* .table-head {
   min-width: 122px;

@@ -14,7 +14,8 @@ export const useScheduleStore = defineStore('schedule', {
         'ТБФ (технология)': 'tbft',
         ДиНО: 'dino'
       },
-      path: 'http://127.0.0.1:8000',
+      // path: 'http://127.0.0.1:8000',
+      path: 'https://mspu-schedule-server.onrender.com',
       allTeachers: [],
       allGroups: [],
       groups: [],
@@ -24,9 +25,13 @@ export const useScheduleStore = defineStore('schedule', {
       selectedList: '',
       teachers: [],
       detailedFlag: false,
-      teachersLessons: [],
-      groupsLessons: [],
-      searchTerm: ''
+      teachersLessons: [] as Lessons | unknown,
+      groupsLessons: [] as Lessons | unknown,
+      searchTerm: '',
+      currentUser: '',
+      teacherToSendLesson: '',
+      groupToSendLesson: '',
+      editingLesson: {}
     }
   },
 
@@ -41,7 +46,6 @@ export const useScheduleStore = defineStore('schedule', {
     },
 
     searchedGroups(state): { faculty: string; group_name: string }[] {
-      console.log(state.groups)
       if (state.searchTerm === '') {
         return []
       }
@@ -64,6 +68,16 @@ export const useScheduleStore = defineStore('schedule', {
       window.scrollTo(0, 0)
     },
 
+    selectTeacherToSendLesson(teacher_name: string) {
+      this.teacherToSendLesson = teacher_name
+      console.log(this.teacherToSendLesson)
+    },
+
+    selectGroupToSendLesson(groupName: string) {
+      this.groupToSendLesson = groupName
+      console.log(this.groupToSendLesson)
+    },
+
     async selectGroup(group_name: string) {
       this.selectedGroup = group_name
       this.groupsLessons = await getRequest(
@@ -83,7 +97,7 @@ export const useScheduleStore = defineStore('schedule', {
         (group: { faculty: string; group_name: string }) => group.faculty === this.selectedFaculty
       )
     },
-
+    deleteLesson(day: number, lessonNumber: number) {},
     async getData() {
       this.allTeachers = await getRequest(`${this.path}/teachers/`)
       this.allGroups = await getRequest(`${this.path}/lessons/groups`)

@@ -1,3 +1,30 @@
+<script lang="ts">
+import { defineComponent } from 'vue'
+import type { PropType } from 'vue'
+
+export default defineComponent({
+  name: 'GroupLessonFirstGroupNumeratorDenominatorSecondGroup',
+  props: {
+    lesson: {
+      type: Array as PropType<Lesson[]>,
+      required: true
+    },
+    lessonNumber: {
+      type: Number,
+      default: 0
+    },
+    day: {
+      type: String,
+      default: ''
+    },
+    isAdmin: {
+      type: Boolean,
+      default: false
+    }
+  },
+  emits: ['dltLesson']
+})
+</script>
 <template>
   <tr>
     <td rowspan="2">
@@ -70,29 +97,3 @@
     </td> -->
   </tr>
 </template>
-<script>
-export default {
-  name: 'GroupLessonFirstGroupNumeratorDenominatorSecondGroup',
-  props: {
-    lesson: {
-      type: Array,
-      default() {
-        return []
-      }
-    },
-    lessonNumber: {
-      type: Number,
-      default: 0
-    },
-    day: {
-      type: String,
-      default: ''
-    },
-    isAdmin: {
-      type: Boolean,
-      default: false
-    }
-  },
-  emits: ['dltLesson']
-}
-</script>

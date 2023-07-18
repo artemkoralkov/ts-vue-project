@@ -1,3 +1,26 @@
+<script lang="ts">
+import { defineComponent } from 'vue'
+import type { PropType } from 'vue'
+export default defineComponent({
+  name: 'TeacherLesson',
+  props: {
+    lesson: {
+      type: Object as PropType<Lesson>,
+      required: true
+    },
+    lessonNumber: {
+      type: Number,
+      default: 0
+    },
+    day: {
+      type: String,
+      default: ''
+    }
+  },
+  emits: ['editLesson', 'deleteLesson']
+})
+</script>
+
 <template>
   <tr>
     <td>
@@ -31,25 +54,3 @@
     </template>
   </tr>
 </template>
-<script lang="ts">
-import { defineComponent } from 'vue'
-import type { PropType } from 'vue'
-export default defineComponent({
-  name: 'TeacherLesson',
-  props: {
-    lesson: {
-      type: Object as PropType<Lesson>,
-      required: true
-    },
-    lessonNumber: {
-      type: Number,
-      default: 0
-    },
-    day: {
-      type: String,
-      default: ''
-    }
-  },
-  emits: ['editLesson', 'deleteLesson']
-})
-</script>
