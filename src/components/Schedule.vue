@@ -4,13 +4,15 @@ import { useScheduleStore } from '@/stores/schedule'
 import GroupsLessonsTable from '@/components/GroupsLessons/GroupsLessonsTable.vue'
 import TeachersLessonsTable from '@/components/TeacherLessons/TeachersLessonsTable.vue'
 import TopBar from '@/components/TopBar.vue'
+import SendLessonToServerModal from '@/components/SendLessonToServerModal.vue'
 import { getTypeOfTheWeek } from '@/utils'
 
 export default defineComponent({
   components: {
     GroupsLessonsTable,
     TeachersLessonsTable,
-    TopBar
+    TopBar,
+    SendLessonToServerModal
   },
   data() {
     return {
@@ -38,6 +40,7 @@ export default defineComponent({
         />
       </template>
     </div>
+    <SendLessonToServerModal />
   </div>
 </template>
 
@@ -63,7 +66,7 @@ button {
   font-family: 'Lato', sans-serif;
 
   @media screen {
-    font-size: 120%;
+    font-size: 130%;
   }
 
   @media (max-width: 400px) {
@@ -94,7 +97,6 @@ li {
   max-height: 100px;
   overflow-y: auto;
   text-align: center;
-  color: white;
 }
 
 .listWrapper li:hover {
@@ -171,17 +173,15 @@ td {
 .faculty-selection {
   margin-bottom: 10px;
   width: 12%;
-  height: 30px;
+  min-height: 30px;
   min-width: 140px;
-  font-size: medium;
   border-radius: 5px;
 }
 
 #search {
   width: 25%;
-  height: 25px;
+  min-height: 30px;
   min-width: 130px;
-  font-size: medium;
   border-radius: 5px;
 }
 
