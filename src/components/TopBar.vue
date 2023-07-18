@@ -2,13 +2,44 @@
 import { defineComponent } from 'vue'
 import { useScheduleStore } from '@/stores/schedule'
 import { getTypeOfTheWeek } from '@/utils'
-
+import Modal from '@/components/Modal.vue'
+import TeacherSelection from '@/components/TeacherSelection.vue'
+import GroupSelection from '@/components/GroupSelection.vue'
+import { selectUser } from '@/utils'
+import { HmacSHA256, enc } from 'crypto-js'
 export default defineComponent({
   name: 'TopBar',
+  components: {
+    Modal,
+    TeacherSelection,
+    GroupSelection
+  },
   data() {
     return {
-      schedule: useScheduleStore(),
-      typeOfTheWeek: getTypeOfTheWeek()
+      scheduleStore: useScheduleStore(),
+      typeOfTheWeek: getTypeOfTheWeek(),
+      showModal: false,
+      password: '',
+      isWrongPassword: false
+    }
+  },
+  methods: {
+    async login() {
+      const hash = HmacSHA256(this.password, import.meta.env.VITE_CRYPT_SALT)
+      const user = selectUser(enc.Base64.stringify(hash))
+      if (user) {
+        this.scheduleStore.currentUser = user
+        this.showModal = false
+
+        console.log(this.scheduleStore.currentUser)
+      } else {
+        this.isWrongPassword = true
+      }
+      this.password = ''
+    },
+    closeModal() {
+      this.showModal = false
+      this.isWrongPassword = false
     }
   }
 })
@@ -16,22 +47,36 @@ export default defineComponent({
 
 <template>
   <header class="top-bar">
-    <button class="edit-button">Редактировать</button>
+    <button class="edit-button" @click="showModal = true">Редактировать</button>
+    <Teleport to="body">
+      <modal :show="showModal" @close="closeModal">
+        <template #header>
+          <h3>Введите пароль</h3>
+        </template>
+        <template #body>
+          <input id="password" v-model="password" :class="{ 'error-input': isWrongPassword }" />
+          <label v-if="isWrongPassword" id="error" for="password">Неверный пароль</label>
+        </template>
+        <template #footer>
+          <button class="modal-default-button" @click="login">Ок</button>
+        </template>
+      </modal>
+    </Teleport>
     <select
-      v-model="schedule.selectedFaculty"
+      v-model="scheduleStore.selectedFaculty"
       class="faculty-selection"
-      @change="schedule.selectFaculty"
+      @change="scheduleStore.selectFaculty"
     >
       <option disabled value="">Выберите факультет</option>
-      <option v-for="faculty in Object.keys(schedule.FACULTIES)" :key="faculty">
+      <option v-for="faculty in Object.keys(scheduleStore.FACULTIES)" :key="faculty">
         {{ faculty }}
       </option>
     </select>
-    <template v-if="schedule.selectedFaculty">
+    <template v-if="scheduleStore.selectedFaculty">
       <div class="form__radio">
         <input
           id="teachers-radiobutton"
-          v-model="schedule.selectedList"
+          v-model="scheduleStore.selectedList"
           class="row-radio"
           type="radio"
           value="Преподаватели"
@@ -40,7 +85,7 @@ export default defineComponent({
 
         <input
           id="groups-radiobutton"
-          v-model="schedule.selectedList"
+          v-model="scheduleStore.selectedList"
           class="row-radio"
           type="radio"
           value="Группы"
@@ -48,72 +93,25 @@ export default defineComponent({
         <label for="groups-radiobutton" class="radio-btn-text"> Группы </label>
       </div>
     </template>
-    <template v-if="schedule.selectedList === 'Преподаватели'">
-      <!-- <AutoComplete
-          v-model="schedule.searchTerm"
-          :suggestions="schedule.searchedTeachers"
-          :placeholder="'Преподаватель'"
-          @complete="schedule.search()"
-          @item-select="OnSelectTeacher"
-        /> -->
-      <input
-        id="search"
-        v-model="schedule.searchTerm"
-        type="text"
-        placeholder="Преподаватель"
-        autocomplete="off"
-      />
-      <div class="listWrapper">
-        <ul v-if="schedule.searchTerm">
-          <li
-            v-for="teacher in schedule.searchedTeachers"
-            :key="teacher"
-            @click="schedule.selectTeacher(teacher.teacher_name)"
-          >
-            {{ teacher.teacher_name }}
-          </li>
-          <li v-if="schedule.searchTerm !== '' && schedule.searchedTeachers.length === 0">
-            Ничего не найдно
-          </li>
-        </ul>
-      </div>
+    <template v-if="scheduleStore.selectedList === 'Преподаватели'">
+      <TeacherSelection @teacher-selection="scheduleStore.selectTeacher" />
     </template>
-    <template v-else-if="schedule.selectedList === 'Группы'">
-      <input
-        id="search"
-        v-model="schedule.searchTerm"
-        type="text"
-        placeholder="Группа"
-        autocomplete="off"
-      />
-      <div class="listWrapper">
-        <ul v-if="schedule.searchTerm">
-          <li
-            v-for="group in schedule.searchedGroups"
-            :key="group"
-            @click="schedule.selectGroup(group.group_name)"
-          >
-            {{ group.group_name }}
-          </li>
-          <li v-if="schedule.searchTerm !== '' && schedule.searchedGroups.length === 0">
-            Ничего не найдно
-          </li>
-        </ul>
-      </div>
+    <template v-else-if="scheduleStore.selectedList === 'Группы'">
+      <GroupSelection @group-selection="scheduleStore.selectGroup" />
     </template>
-    <template v-if="schedule.selectedGroup">
+    <template v-if="scheduleStore.selectedGroup">
       <h1 class="centred-text">
-        {{ schedule.selectedGroup }}
+        {{ scheduleStore.selectedGroup }}
       </h1>
     </template>
-    <template v-else-if="schedule.selectedTeacher">
+    <template v-else-if="scheduleStore.selectedTeacher">
       <h1 class="centred-text">
-        {{ schedule.selectedTeacher }}
+        {{ scheduleStore.selectedTeacher }}
       </h1>
     </template>
-    <h3 class="centred-text">
+    <h2 class="centred-text">
       {{ typeOfTheWeek }}
-    </h3>
+    </h2>
   </header>
 </template>
 
@@ -122,5 +120,13 @@ export default defineComponent({
   position: absolute;
   top: 0;
   right: 0;
+}
+
+.error-input {
+  border-color: red;
+}
+
+#error {
+  color: red;
 }
 </style>
