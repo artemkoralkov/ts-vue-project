@@ -17,14 +17,14 @@
         }}
       </p>
     </td>
-    <template v-if="isAdmin">
+    <template v-if="true">
       <td>
-        <button class="button" @click="$emit('editLesson')">
+        <button class="button">
           <span class="material-icons"> create </span>
         </button>
       </td>
       <td>
-        <button class="button" @click="$emit('dltLesson', lesson.id, dayName, lessonNumber)">
+        <button class="button">
           <span class="material-icons">delete</span>
         </button>
       </td>
@@ -34,23 +34,23 @@
     <td colspan="3">
       <span class="lesson-name">Пропускная</span>
     </td>
-    <td v-if="isAdmin" colspan="2">
-      <button class="button" @click="$emit('addLesson')">
+    <td v-if="true" colspan="2">
+      <button class="button">
         <span class="material-icons"> add </span>
       </button>
     </td>
   </tr>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from 'vue'
+import type { PropType } from 'vue'
+export default defineComponent({
   name: 'TeacherLessonNumerator',
   props: {
     lesson: {
-      type: Object,
-      default() {
-        return {}
-      }
+      type: Object as PropType<Lesson>,
+      required: true
     },
     lessonNumber: {
       type: Number,
@@ -66,5 +66,5 @@ export default {
     }
   },
   emits: ['dltLesson', 'addLesson', 'editLesson']
-}
+})
 </script>

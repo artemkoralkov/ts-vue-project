@@ -21,17 +21,14 @@
         }}
       </p>
     </td>
-    <template v-if="isAdmin">
+    <template v-if="true">
       <td>
-        <button
-          class="button"
-          @click="$emit('editLesson', lesson[0].day, dayName, lessonNumber, lesson[0])"
-        >
+        <button class="button">
           <span class="material-icons"> create </span>
         </button>
       </td>
       <td>
-        <button class="button" @click="$emit('dltLesson', lesson[0].id, dayName, lessonNumber)">
+        <button class="button">
           <span class="material-icons">delete</span>
         </button>
       </td>
@@ -41,7 +38,7 @@
     <td colspan="3">
       <span class="lesson-name">
         {{ lesson[1].lesson_title }}
-        <template v-if="lesson[1].lesson_type"> ({{ lesson[1].lesson_type }}) </template>
+        <template v-if="lesson?.[1].lesson_type"> ({{ lesson[1].lesson_type }}) </template>
       </span>
       <p class="group-name line-break">
         {{ lesson[1].group_name }}
@@ -56,46 +53,38 @@
         }}
       </p>
     </td>
-    <template v-if="isAdmin">
+    <template v-if="true">
       <td>
-        <button
-          class="button"
-          @click="$emit('editLesson', lesson[1].day, dayName, lessonNumber, lesson[1])"
-        >
+        <button class="button">
           <span class="material-icons"> create </span>
         </button>
       </td>
       <td>
-        <button class="button" @click="$emit('dltLesson', lesson[1].id, dayName, lessonNumber)">
+        <button class="button">
           <span class="material-icons">delete</span>
         </button>
       </td>
     </template>
   </tr>
 </template>
-<script>
-export default {
+<script lang="ts">
+import type { PropType } from 'vue'
+import { defineComponent } from 'vue'
+
+export default defineComponent({
   name: 'TeacherLessonNumeratorDenominator',
   props: {
     lesson: {
-      type: Array,
-      default() {
-        return []
-      }
+      type: Array as PropType<Lesson[]>,
+      required: true
     },
-    lessonNumber: {
-      type: Number,
-      default: 0
-    },
-    dayName: {
-      type: String,
-      default: ''
-    },
+    lessonNumber: Number,
+    dayName: String,
     isAdmin: {
       type: Boolean,
       default: false
     }
   },
   emits: ['dltLesson', 'editLesson']
-}
+})
 </script>

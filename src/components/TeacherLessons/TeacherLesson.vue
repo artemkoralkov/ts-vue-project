@@ -17,44 +17,39 @@
         }}
       </p>
     </td>
-    <template v-if="isAdmin">
+    <template v-if="true">
       <td>
-        <button class="button" @click="$emit('editLesson')">
+        <button class="button">
           <span class="material-icons"> create </span>
         </button>
       </td>
       <td>
-        <button class="button" @click="$emit('dltLesson', lesson.id, day, lessonNumber)">
+        <button class="button">
           <span class="material-icons">delete</span>
         </button>
       </td>
     </template>
   </tr>
 </template>
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from 'vue'
+import type { PropType } from 'vue'
+export default defineComponent({
   name: 'TeacherLesson',
   props: {
     lesson: {
-      type: Object,
-      default() {
-        return {}
-      }
+      type: Object as PropType<Lesson>,
+      required: true
     },
     lessonNumber: {
       type: Number,
       default: 0
     },
-
     day: {
       type: String,
       default: ''
-    },
-    isAdmin: {
-      type: Boolean,
-      default: false
     }
   },
-  emits: ['editLesson', 'dltLesson']
-}
+  emits: ['editLesson', 'deleteLesson']
+})
 </script>
