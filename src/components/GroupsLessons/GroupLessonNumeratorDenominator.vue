@@ -9,11 +9,7 @@ export default defineComponent({
       type: Array as PropType<Lesson[]>,
       required: true
     },
-    lessonNumber: {
-      type: Number,
-      default: 0
-    },
-    day: {
+    dayName: {
       type: String,
       default: ''
     },
@@ -22,13 +18,13 @@ export default defineComponent({
       default: false
     }
   },
-  emits: ['editLesson', 'dltLesson']
+  emits: ['deleteLesson', 'openModal']
 })
 </script>
 <template>
   <tr>
-    <td rowspan="2" class="lesson-number-col">
-      <span class="lesson-number">{{ lessonNumber + 1 }}</span>
+    <td rowspan="2" class="lesson-number">
+      <span>{{ lesson[0].lesson_number + 1 }}</span>
     </td>
     <td colspan="3">
       <span class="lesson-name">
@@ -51,14 +47,18 @@ export default defineComponent({
     <!-- <td>
       {{ lesson[0].room_number?lesson[0].room_number:'' }}
     </td> -->
-    <template v-if="isAdmin">
+    <template v-if="true">
       <td>
-        <button class="button" @click="$emit('editLesson', lesson[0].id)">
+        <button
+          class="button"
+          @click="$emit('openModal', dayName, lesson[0].lesson_number, lesson[0])"
+        >
           <span class="material-icons"> create </span>
         </button>
-      </td>
-      <td>
-        <button class="button" @click="$emit('dltLesson', lesson[0].id, day, lessonNumber)">
+        <button
+          class="button"
+          @click="$emit('deleteLesson', lesson[0].id, dayName, lesson[0].lesson_number)"
+        >
           <span class="material-icons">delete</span>
         </button>
       </td>
@@ -86,14 +86,18 @@ export default defineComponent({
     <!-- <td>
       {{ lesson[1].room_number?lesson[1].room_number:'' }}
     </td> -->
-    <template v-if="isAdmin">
+    <template v-if="true">
       <td>
-        <button class="button" @click="$emit('editLesson', lesson[1].id)">
+        <button
+          class="button"
+          @click="$emit('openModal', dayName, lesson[1].lesson_number, lesson[1])"
+        >
           <span class="material-icons"> create </span>
         </button>
-      </td>
-      <td>
-        <button class="button" @click="$emit('dltLesson', lesson[1].id, day, lessonNumber)">
+        <button
+          class="button"
+          @click="$emit('deleteLesson', lesson[1].id, dayName, lesson[1].lesson_number)"
+        >
           <span class="material-icons">delete</span>
         </button>
       </td>

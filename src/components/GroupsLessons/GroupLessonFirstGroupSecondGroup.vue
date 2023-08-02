@@ -8,11 +8,7 @@ export default defineComponent({
       type: Array as PropType<Lesson[]>,
       required: true
     },
-    lessonNumber: {
-      type: Number,
-      default: 0
-    },
-    day: {
+    dayName: {
       type: String,
       default: ''
     },
@@ -21,13 +17,13 @@ export default defineComponent({
       default: false
     }
   },
-  emits: ['dltLesson']
+  emits: ['deleteLesson', 'openModal']
 })
 </script>
 <template>
   <tr>
-    <td>
-      <span class="lesson-number">{{ lessonNumber + 1 }}</span>
+    <td class="lesson-number">
+      <span>{{ lesson[0].lesson_number + 1 }}</span>
     </td>
     <td>
       <span class="lesson-name">
@@ -50,13 +46,20 @@ export default defineComponent({
     <!-- <td>
       {{ lesson[0].room_number?lesson[0].room_number:'' }}
     </td> -->
-    <template v-if="isAdmin">
-      <td class="right-border">
-        <button class="button" @click="$emit('dltLesson', lesson[0].id, day, lessonNumber)">
-          <span class="material-icons">delete</span>
-        </button>
-      </td>
-    </template>
+    <td v-if="true" class="right-border">
+      <button
+        class="button"
+        @click="$emit('openModal', dayName, lesson[0].lesson_number, lesson[0])"
+      >
+        <span class="material-icons"> create </span>
+      </button>
+      <button
+        class="button"
+        @click="$emit('deleteLesson', lesson[0].id, dayName, lesson[0].lesson_number)"
+      >
+        <span class="material-icons">delete</span>
+      </button>
+    </td>
     <td>
       <span class="lesson-name">
         {{ lesson[1].lesson_title }}
@@ -78,18 +81,19 @@ export default defineComponent({
     <!-- <td>
       {{ lesson[1].room_number?lesson[1].room_number:'' }}
     </td> -->
-    <template v-if="isAdmin">
-      <td colspan="2">
-        <button class="button" @click="$emit('dltLesson', lesson[1].id, day, lessonNumber)">
-          <span class="material-icons">delete</span>
-        </button>
-      </td>
-    </template>
+    <td v-if="true">
+      <button
+        class="button"
+        @click="$emit('openModal', dayName, lesson[1].lesson_number, lesson[1])"
+      >
+        <span class="material-icons"> create </span>
+      </button>
+      <button
+        class="button"
+        @click="$emit('deleteLesson', lesson[1].id, dayName, lesson[1].lesson_number)"
+      >
+        <span class="material-icons">delete</span>
+      </button>
+    </td>
   </tr>
 </template>
-<style>
-.right-border {
-  border-right: 1px solid lightgray;
-  width: 5px;
-}
-</style>

@@ -1,11 +1,16 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { useScheduleStore } from '@/stores/schedule'
 export default defineComponent({
   name: 'TeacherSelection',
   emits: ['teacherSelection'],
   data() {
-    return { scheduleStore: useScheduleStore(), searchTerm: '' }
+    return { searchTerm: '' }
+  },
+  props: {
+    teachers: {
+      type: Array,
+      required: true
+    }
   },
   methods: {
     selectTeacher(teacherName) {
@@ -18,9 +23,8 @@ export default defineComponent({
       if (this.searchTerm === '') {
         return []
       }
-      return this.scheduleStore.teachers.filter(
-        (teacher: { faculty: string; teacher_name: string }) =>
-          teacher.teacher_name.toLowerCase().includes(this.searchTerm.toLowerCase())
+      return this.teachers.filter((teacher: { faculty: string; teacher_name: string }) =>
+        teacher.teacher_name.toLowerCase().includes(this.searchTerm.toLowerCase())
       )
     }
   }

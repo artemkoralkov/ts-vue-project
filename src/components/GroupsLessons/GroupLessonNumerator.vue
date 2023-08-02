@@ -9,11 +9,7 @@ export default defineComponent({
       type: Object as PropType<Lesson>,
       required: true
     },
-    lessonNumber: {
-      type: Number,
-      default: 0
-    },
-    day: {
+    dayName: {
       type: String,
       default: ''
     },
@@ -22,13 +18,13 @@ export default defineComponent({
       default: false
     }
   },
-  emits: ['editLesson', 'dltLesson', 'addLesson']
+  emits: ['deleteLesson', 'openModal']
 })
 </script>
 <template>
   <tr>
     <td rowspan="2">
-      <span class="lesson-number">{{ lessonNumber + 1 }}</span>
+      <span class="lesson-number">{{ lesson.lesson_number + 1 }}</span>
     </td>
     <td colspan="3">
       <span class="lesson-name">
@@ -44,18 +40,18 @@ export default defineComponent({
         {{ lesson.teacher_name }}
       </p>
     </td>
-    `
     <!-- <td>
       {{ lesson.room_number?lesson.room_number:'' }}
     </td>` -->
-    <template v-if="isAdmin">
+    <template v-if="true">
       <td>
-        <button class="button" @click="$emit('editLesson', lesson.id)">
+        <button class="button" @click="$emit('openModal', dayName, lesson.lesson_number, lesson)">
           <span class="material-icons"> create </span>
         </button>
-      </td>
-      <td>
-        <button class="button" @click="$emit('dltLesson', lesson.id, day, lessonNumber)">
+        <button
+          class="button"
+          @click="$emit('deleteLesson', lesson.id, dayName, lesson.lesson_number)"
+        >
           <span class="material-icons">delete</span>
         </button>
       </td>
@@ -65,8 +61,8 @@ export default defineComponent({
     <td colspan="3">
       <span class="lesson-name">Пропускная</span>
     </td>
-    <td v-if="isAdmin" colspan="3">
-      <button class="button" @click="$emit('addLesson')">
+    <td v-if="true" colspan="2">
+      <button class="button" @click="$emit('openModal', dayName, lesson.lesson_number)">
         <span class="material-icons"> add </span>
       </button>
     </td>

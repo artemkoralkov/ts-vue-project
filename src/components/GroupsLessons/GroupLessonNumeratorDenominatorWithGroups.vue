@@ -9,11 +9,7 @@ export default defineComponent({
       type: Array as PropType<Lesson[]>,
       required: true
     },
-    lessonNumber: {
-      type: Number,
-      default: 0
-    },
-    day: {
+    dayName: {
       type: String,
       default: ''
     },
@@ -22,13 +18,13 @@ export default defineComponent({
       default: false
     }
   },
-  emits: ['dltLesson']
+  emits: ['deleteLesson', 'openModal']
 })
 </script>
 <template>
   <tr>
-    <td rowspan="2">
-      <span class="lesson-number">{{ lessonNumber + 1 }}</span>
+    <td rowspan="2" class="lesson-number">
+      <span>{{ lesson[0].lesson_number + 1 }}</span>
     </td>
     <td>
       <span class="lesson-name">
@@ -51,6 +47,22 @@ export default defineComponent({
     <!-- <td>
       {{ lesson[0].room_number?lesson[0].room_number:'' }}
     </td> -->
+    <template v-if="true">
+      <td class="right-border">
+        <button
+          class="button"
+          @click="$emit('openModal', dayName, lesson[0].lesson_number, lesson[0])"
+        >
+          <span class="material-icons"> create </span>
+        </button>
+        <button
+          class="button"
+          @click="$emit('deleteLesson', lesson[0].id, dayName, lesson[0].lesson_number)"
+        >
+          <span class="material-icons">delete</span>
+        </button>
+      </td>
+    </template>
     <td>
       <span class="lesson-name">
         {{ lesson[1].lesson_title }}
@@ -72,6 +84,22 @@ export default defineComponent({
     <!-- <td>
       {{ lesson[1].room_number?lesson[1].room_number:'' }}
     </td> -->
+    <template v-if="true">
+      <td>
+        <button
+          class="button"
+          @click="$emit('openModal', dayName, lesson[1].lesson_number, lesson[1])"
+        >
+          <span class="material-icons"> create </span>
+        </button>
+        <button
+          class="button"
+          @click="$emit('deleteLesson', lesson[1].id, dayName, lesson[1].lesson_number)"
+        >
+          <span class="material-icons">delete</span>
+        </button>
+      </td>
+    </template>
   </tr>
   <tr>
     <td>
@@ -95,7 +123,22 @@ export default defineComponent({
     <!-- <td>
       {{ lesson[2].room_number?lesson[2].room_number:'' }}
     </td> -->
-
+    <template v-if="true">
+      <td class="right-border">
+        <button
+          class="button"
+          @click="$emit('openModal', dayName, lesson[2].lesson_number, lesson[2])"
+        >
+          <span class="material-icons"> create </span>
+        </button>
+        <button
+          class="button"
+          @click="$emit('deleteLesson', lesson[2].id, dayName, lesson[2].lesson_number)"
+        >
+          <span class="material-icons">delete</span>
+        </button>
+      </td>
+    </template>
     <td>
       <span class="lesson-name">
         {{ lesson[3].lesson_title }}
@@ -117,5 +160,21 @@ export default defineComponent({
     <!-- <td>
       {{ lesson[3].room_number?lesson[3].room_number:'' }}
     </td> -->
+    <template v-if="true">
+      <td>
+        <button
+          class="button"
+          @click="$emit('openModal', dayName, lesson[3].lesson_number, lesson[3])"
+        >
+          <span class="material-icons"> create </span>
+        </button>
+        <button
+          class="button"
+          @click="$emit('deleteLesson', lesson[3].id, dayName, lesson[3].lesson_number)"
+        >
+          <span class="material-icons">delete</span>
+        </button>
+      </td>
+    </template>
   </tr>
 </template>

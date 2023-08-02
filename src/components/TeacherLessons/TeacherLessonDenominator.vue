@@ -8,39 +8,34 @@ export default defineComponent({
       type: Object as PropType<Lesson>,
       required: true
     },
-    lessonNumber: {
-      type: Number,
-      default: 0
-    },
     dayName: {
-      type: String,
-      default: ''
+      type: String as PropType<Day>
     },
     isAdmin: {
       type: Boolean,
       default: false
     }
   },
-  emits: ['dltLesson', 'addLesson', 'editLesson']
+  emits: ['deleteLesson', 'openModal']
 })
 </script>
 
 <template>
   <tr>
     <td class="lesson-number" rowspan="2">
-      <span>{{ lessonNumber + 1 }}</span>
+      <span>{{ lesson.lesson_number + 1 }}</span>
     </td>
-    <td colspan="3">
+    <td class="lesson">
       <span class="lesson-name">Пропускная</span>
     </td>
-    <td colspan="2">
-      <button class="button">
+    <td class="buttons">
+      <button class="button" @click="$emit('openModal', dayName, lesson.lesson_number)">
         <span class="material-icons"> add </span>
       </button>
     </td>
   </tr>
   <tr>
-    <td colspan="3">
+    <td>
       <span class="lesson-name">
         {{ lesson.lesson_title }}
         <template v-if="lesson.lesson_type"> ({{ lesson.lesson_type }}) </template>
@@ -54,17 +49,16 @@ export default defineComponent({
         }}
       </p>
     </td>
-    <template v-if="true">
-      <td>
-        <button class="button">
-          <span class="material-icons"> create </span>
-        </button>
-      </td>
-      <td>
-        <button class="button">
-          <span class="material-icons">delete</span>
-        </button>
-      </td>
-    </template>
+    <td v-if="true">
+      <button class="button" @click="$emit('openModal', dayName, lesson.lesson_number, lesson)">
+        <span class="material-icons"> create </span>
+      </button>
+      <button
+        class="button"
+        @click="$emit('deleteLesson', lesson.id, dayName, lesson.lesson_number)"
+      >
+        <span class="material-icons">delete</span>
+      </button>
+    </td>
   </tr>
 </template>

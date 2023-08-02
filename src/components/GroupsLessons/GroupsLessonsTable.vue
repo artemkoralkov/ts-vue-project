@@ -19,6 +19,7 @@ import GroupLessonFirstGroupSecondGroupNumerator from './GroupLessonFirstGroupSe
 import GroupLessonFirstGroupSecondGroupDenominator from './GroupLessonFirstGroupSecondGroupDenominator.vue'
 import { defineComponent } from 'vue'
 import type { PropType } from 'vue'
+import { useScheduleStore } from '@/stores/schedule'
 export default defineComponent({
   name: 'GroupsLessonsTable',
   components: {
@@ -45,16 +46,11 @@ export default defineComponent({
     lessons: {
       type: Object as PropType<Lessons>,
       required: true
-    },
-    isAdmin: {
-      type: Boolean,
-      default: false
     }
   },
-  emits: ['add', 'deleteLesson', 'edit'],
-  methods: {
-    deleteLesson(lessonId, day, lessonNumber) {
-      this.$emit('deleteLesson', lessonId, day, lessonNumber, false, true)
+  data() {
+    return {
+      scheduleStore: useScheduleStore()
     }
   }
 })
@@ -63,271 +59,300 @@ export default defineComponent({
 <template>
   <table>
     <thead />
-    <template v-for="(day, dayName, index) in lessons" :key="day">
-      <TableHead :day="dayName" />
-      <tbody>
-        <template v-for="(lesson, lessonNumber) in day" :key="lesson">
-          <template
-            v-if="
-              lesson.length &&
-              lesson.sort((a, b) =>
-                a.denominator > b.denominator ? 1 : b.denominator > a.denominator ? -1 : 0
-              )
-            "
-          >
-            <template v-if="lesson.length === 1">
-              <template v-if="lesson[0].numerator">
-                <GroupLessonNumerator
-                  :lesson="lesson[0]"
-                  :lesson-number="lessonNumber"
-                  :day="dayName"
-                />
-              </template>
-              <template v-else-if="lesson[0].denominator">
-                <GroupLessonDenominator
-                  :lesson="lesson[0]"
-                  :lesson-number="lessonNumber"
-                  :day="dayName"
-                />
-              </template>
-              <template v-else>
-                <GroupLesson :lesson="lesson[0]" :lesson-number="lessonNumber" :day="dayName" />
-              </template>
+    <template v-for="(day, dayName) in lessons" :key="day">
+      <TableHead :day="dayName" :colspan="6" />
+      <template v-for="(lesson, lessonNumber) in day" :key="lesson">
+        <template
+          v-if="
+            lesson.length &&
+            lesson.sort((a, b) =>
+              a.denominator > b.denominator ? 1 : b.denominator > a.denominator ? -1 : 0
+            )
+          "
+        >
+          <template v-if="lesson.length === 1">
+            <template v-if="lesson[0].numerator">
+              <GroupLessonNumerator
+                :lesson="lesson[0]"
+                :day-name="dayName"
+                @open-modal="scheduleStore.openLessonModal"
+                @delete-lesson="scheduleStore.deleteGroupLesson"
+              />
             </template>
-
-            <template v-else-if="lesson.length === 2">
-              <template v-if="lesson[0].numerator && lesson[1].denominator">
-                <GroupLessonNumeratorDenominator
-                  :lesson="lesson"
-                  :lesson-number="lessonNumber"
-                  :day="dayName"
-                />
-              </template>
-
-              <template
-                v-else-if="
-                  !lesson[0].numerator &&
-                  !lesson[1].denominator &&
-                  !lesson[0].denominator &&
-                  !lesson[1].numerator
-                "
-              >
-                <GroupLessonFirstGroupSecondGroup
-                  :lesson="lesson"
-                  :lesson-number="lessonNumber"
-                  :day="dayName"
-                />
-              </template>
-              <template v-else-if="lesson[0].numerator && lesson[1].numerator">
-                <GroupLessonFirstGroupNumeratorSecondGroupNumerator
-                  :lesson="lesson"
-                  :lesson-number="lessonNumber"
-                  :day="dayName"
-                />
-              </template>
-              <template
-                v-else-if="
-                  lesson[0].first_group &&
-                  lesson[1].second_group &&
-                  lesson[0].denominator &&
-                  lesson[1].denominator
-                "
-              >
-                <GroupLessonFirstGroupDenominatorSecondGroupDenominator
-                  :lesson="lesson"
-                  :lesson-number="lessonNumber"
-                  :day="dayName"
-                />
-              </template>
-              <template
-                v-else-if="
-                  lesson[0].first_group &&
-                  lesson[0].numerator &&
-                  lesson[1].second_group &&
-                  !lesson[1].numerator &&
-                  !lesson[1].denominator
-                "
-              >
-                <GroupLessonFirstGroupNumeratorSecondGroup
-                  :lesson="lesson"
-                  :lesson-number="lessonNumber"
-                  :day="dayName"
-                />
-              </template>
-              <!-- GroupLessonFirstGroupDenominatorSecondGroup -->
-              <template
-                v-else-if="
-                  (lesson[0].first_group &&
-                    lesson[0].denominator &&
-                    lesson[1].second_group &&
-                    !lesson[1].numerator &&
-                    !lesson[1].denominator) ||
-                  (lesson[1].first_group &&
-                    lesson[1].denominator &&
-                    lesson[0].second_group &&
-                    !lesson[0].numerator &&
-                    !lesson[0].denominator)
-                "
-              >
-                <GroupLessonFirstGroupDenominatorSecondGroup
-                  :lesson="lesson"
-                  :lesson-number="lessonNumber"
-                  :day="dayName"
-                />
-              </template>
-              <template
-                v-else-if="
-                  lesson[0].first_group &&
-                  !lesson[0].numerator &&
-                  !lesson[0].denominator &&
-                  lesson[1].second_group &&
-                  lesson[1].numerator
-                "
-              >
-                <GroupLessonFirstGroupSecondGroupNumerator
-                  :lesson="lesson"
-                  :lesson-number="lessonNumber"
-                  :day="dayName"
-                />
-              </template>
-              <template
-                v-else-if="
-                  lesson[0].first_group &&
-                  !lesson[0].numerator &&
-                  !lesson[0].denominator &&
-                  lesson[1].second_group &&
-                  lesson[1].denominator
-                "
-              >
-                <GroupLessonFirstGroupSecondGroupDenominator
-                  :lesson="lesson"
-                  :lesson-number="lessonNumber"
-                  :day="dayName"
-                />
-              </template>
-              <template v-else>
-                {{ lesson }}
-              </template>
-            </template>
-            <template v-else-if="lesson.length === 3">
-              <template
-                v-if="
-                  lesson[0].first_group &&
-                  lesson[0].numerator &&
-                  lesson[1].second_group &&
-                  lesson[1].numerator
-                "
-              >
-                <GroupLessonNumeratorWithGroups
-                  :lesson="lesson"
-                  :lesson-number="lessonNumber"
-                  :day="dayName"
-                />
-              </template>
-              <template
-                v-else-if="
-                  lesson[1].first_group &&
-                  lesson[1].denominator &&
-                  lesson[2].second_group &&
-                  lesson[2].denominator &&
-                  !lesson[0].first_group &&
-                  !lesson[0].second_group
-                "
-              >
-                <GroupLessonDenominatorWithGroups
-                  :lesson="lesson"
-                  :lesson-number="lessonNumber"
-                  :day="dayName"
-                />
-              </template>
-              <template
-                v-else-if="lesson[0].first_group && !lesson[0].numerator && !lesson[0].denominator"
-              >
-                <GroupLessonFirstGroupSecondGroupNumeratorDenominator
-                  :lesson="lesson"
-                  :lesson-number="lessonNumber"
-                  :day="dayName"
-                />
-              </template>
-              <template
-                v-else-if="
-                  lesson[0].first_group &&
-                  lesson[0].numerator &&
-                  lesson[1].second_group &&
-                  !lesson[1].numerator &&
-                  !lesson[1].denominator &&
-                  lesson[2].first_group &&
-                  lesson[2].denominator
-                "
-              >
-                <GroupLessonFirstGroupNumeratorDenominatorSecondGroup
-                  :lesson="lesson"
-                  :lesson-number="lessonNumber"
-                  :day="dayName"
-                />
-              </template>
-              <template
-                v-else-if="
-                  lesson[0].second_group &&
-                  lesson[0].numerator &&
-                  lesson[1].first_group &&
-                  lesson[1].denominator &&
-                  lesson[2].second_group &&
-                  lesson[2].denominator
-                "
-              >
-                <GroupLessonFirstGroupDenominatorSecondGroupNumeratorDenominator
-                  :lesson="lesson"
-                  :lesson-number="lessonNumber"
-                  :day="dayName"
-                />
-              </template>
-              <template
-                v-else-if="
-                  lesson[0].first_group &&
-                  lesson[0].numerator &&
-                  lesson[1].first_group &&
-                  lesson[1].denominator &&
-                  lesson[2].second_group &&
-                  lesson[2].denominator
-                "
-              >
-                <GroupLessonDenominatorWithGroups
-                  :lesson="lesson"
-                  :lesson-number="lessonNumber"
-                  :day="dayName"
-                />
-              </template>
-            </template>
-            <template v-else-if="lesson.length === 4">
-              <GroupLessonNumeratorDenominatorWithGroups
-                :lesson="lesson"
-                :lesson-number="lessonNumber"
-                :day="dayName"
+            <template v-else-if="lesson[0].denominator">
+              <GroupLessonDenominator
+                :lesson="lesson[0]"
+                :day-name="dayName"
+                @open-modal="scheduleStore.openLessonModal"
+                @delete-lesson="scheduleStore.deleteGroupLesson"
               />
             </template>
             <template v-else>
-              <GroupLesson :lesson="lesson[0]" :lesson-number="lessonNumber" :day="dayName" />
+              <GroupLesson
+                :lesson="lesson[0]"
+                :day-name="dayName"
+                @open-modal="scheduleStore.openLessonModal"
+                @delete-lesson="scheduleStore.deleteGroupLesson"
+              />
             </template>
           </template>
-          <template v-else>
-            <tr>
-              <td>
-                <span class="lesson-number">{{ lessonNumber + 1 }}</span>
-              </td>
-              <td colspan="3">
-                <span class="lesson-name">Пропускная</span>
-              </td>
 
-              <td v-if="isAdmin" colspan="2">
-                <button class="button" @click="$emit('add', index, dayName, lessonNumber, 'group')">
-                  <span class="material-icons"> add </span>
-                </button>
-              </td>
-            </tr>
+          <template v-else-if="lesson.length === 2">
+            <template v-if="lesson[0].numerator && lesson[1].denominator">
+              <GroupLessonNumeratorDenominator
+                :lesson="lesson"
+                :day-name="dayName"
+                @open-modal="scheduleStore.openLessonModal"
+                @delete-lesson="scheduleStore.deleteGroupLesson"
+              />
+            </template>
+
+            <template
+              v-else-if="
+                !lesson[0].numerator &&
+                !lesson[1].denominator &&
+                !lesson[0].denominator &&
+                !lesson[1].numerator
+              "
+            >
+              <GroupLessonFirstGroupSecondGroup
+                :lesson="lesson"
+                :day-name="dayName"
+                @open-modal="scheduleStore.openLessonModal"
+                @delete-lesson="scheduleStore.deleteGroupLesson"
+              />
+            </template>
+            <template v-else-if="lesson[0].numerator && lesson[1].numerator">
+              <GroupLessonFirstGroupNumeratorSecondGroupNumerator
+                :lesson="lesson"
+                :day-name="dayName"
+                @open-modal="scheduleStore.openLessonModal"
+                @delete-lesson="scheduleStore.deleteGroupLesson"
+              />
+            </template>
+            <template
+              v-else-if="
+                lesson[0].first_group &&
+                lesson[1].second_group &&
+                lesson[0].denominator &&
+                lesson[1].denominator
+              "
+            >
+              <GroupLessonFirstGroupDenominatorSecondGroupDenominator
+                :lesson="lesson"
+                :day-name="dayName"
+                @open-modal="scheduleStore.openLessonModal"
+                @delete-lesson="scheduleStore.deleteGroupLesson"
+              />
+            </template>
+            <template
+              v-else-if="
+                lesson[0].first_group &&
+                lesson[0].numerator &&
+                lesson[1].second_group &&
+                !lesson[1].numerator &&
+                !lesson[1].denominator
+              "
+            >
+              <GroupLessonFirstGroupNumeratorSecondGroup
+                :lesson="lesson"
+                :day-name="dayName"
+                @open-modal="scheduleStore.openLessonModal"
+                @delete-lesson="scheduleStore.deleteGroupLesson"
+              />
+            </template>
+            <!-- GroupLessonFirstGroupDenominatorSecondGroup -->
+            <template
+              v-else-if="
+                (lesson[0].first_group &&
+                  lesson[0].denominator &&
+                  lesson[1].second_group &&
+                  !lesson[1].numerator &&
+                  !lesson[1].denominator) ||
+                (lesson[1].first_group &&
+                  lesson[1].denominator &&
+                  lesson[0].second_group &&
+                  !lesson[0].numerator &&
+                  !lesson[0].denominator)
+              "
+            >
+              <GroupLessonFirstGroupDenominatorSecondGroup
+                :lesson="lesson"
+                :day-name="dayName"
+                @open-modal="scheduleStore.openLessonModal"
+                @delete-lesson="scheduleStore.deleteGroupLesson"
+              />
+            </template>
+            <template
+              v-else-if="
+                lesson[0].first_group &&
+                !lesson[0].numerator &&
+                !lesson[0].denominator &&
+                lesson[1].second_group &&
+                lesson[1].numerator
+              "
+            >
+              <GroupLessonFirstGroupSecondGroupNumerator
+                :lesson="lesson"
+                :day-name="dayName"
+                @open-modal="scheduleStore.openLessonModal"
+                @delete-lesson="scheduleStore.deleteGroupLesson"
+              />
+            </template>
+            <template
+              v-else-if="
+                lesson[0].first_group &&
+                !lesson[0].numerator &&
+                !lesson[0].denominator &&
+                lesson[1].second_group &&
+                lesson[1].denominator
+              "
+            >
+              <GroupLessonFirstGroupSecondGroupDenominator
+                :lesson="lesson"
+                :day-name="dayName"
+                @open-modal="scheduleStore.openLessonModal"
+                @delete-lesson="scheduleStore.deleteGroupLesson"
+              />
+            </template>
+            <template v-else>
+              {{ lesson }}
+            </template>
+          </template>
+          <template v-else-if="lesson.length === 3">
+            <template
+              v-if="
+                lesson[0].first_group &&
+                lesson[0].numerator &&
+                lesson[1].second_group &&
+                lesson[1].numerator
+              "
+            >
+              <GroupLessonNumeratorWithGroups
+                :lesson="lesson"
+                :day-name="dayName"
+                @open-modal="scheduleStore.openLessonModal"
+                @delete-lesson="scheduleStore.deleteGroupLesson"
+              />
+            </template>
+            <template
+              v-else-if="
+                lesson[1].first_group &&
+                lesson[1].denominator &&
+                lesson[2].second_group &&
+                lesson[2].denominator &&
+                !lesson[0].first_group &&
+                !lesson[0].second_group
+              "
+            >
+              <GroupLessonDenominatorWithGroups
+                :lesson="lesson"
+                :day-name="dayName"
+                @open-modal="scheduleStore.openLessonModal"
+                @delete-lesson="scheduleStore.deleteGroupLesson"
+              />
+            </template>
+            <template
+              v-else-if="lesson[0].first_group && !lesson[0].numerator && !lesson[0].denominator"
+            >
+              <GroupLessonFirstGroupSecondGroupNumeratorDenominator
+                :lesson="lesson"
+                :day-name="dayName"
+                @open-modal="scheduleStore.openLessonModal"
+                @delete-lesson="scheduleStore.deleteGroupLesson"
+              />
+            </template>
+            <template
+              v-else-if="
+                lesson[0].first_group &&
+                lesson[0].numerator &&
+                lesson[1].second_group &&
+                !lesson[1].numerator &&
+                !lesson[1].denominator &&
+                lesson[2].first_group &&
+                lesson[2].denominator
+              "
+            >
+              <GroupLessonFirstGroupNumeratorDenominatorSecondGroup
+                :lesson="lesson"
+                :day-name="dayName"
+                @open-modal="scheduleStore.openLessonModal"
+                @delete-lesson="scheduleStore.deleteGroupLesson"
+              />
+            </template>
+            <template
+              v-else-if="
+                lesson[0].second_group &&
+                lesson[0].numerator &&
+                lesson[1].first_group &&
+                lesson[1].denominator &&
+                lesson[2].second_group &&
+                lesson[2].denominator
+              "
+            >
+              <GroupLessonFirstGroupDenominatorSecondGroupNumeratorDenominator
+                :lesson="lesson"
+                :day-name="dayName"
+                @open-modal="scheduleStore.openLessonModal"
+                @delete-lesson="scheduleStore.deleteGroupLesson"
+              />
+            </template>
+            <template
+              v-else-if="
+                lesson[0].first_group &&
+                lesson[0].numerator &&
+                lesson[1].first_group &&
+                lesson[1].denominator &&
+                lesson[2].second_group &&
+                lesson[2].denominator
+              "
+            >
+              <GroupLessonDenominatorWithGroups
+                :lesson="lesson"
+                :day-name="dayName"
+                @open-modal="scheduleStore.openLessonModal"
+                @delete-lesson="scheduleStore.deleteGroupLesson"
+              />
+            </template>
+          </template>
+          <template v-else-if="lesson.length === 4">
+            <GroupLessonNumeratorDenominatorWithGroups
+              :lesson="lesson"
+              :day-name="dayName"
+              @open-modal="scheduleStore.openLessonModal"
+              @delete-lesson="scheduleStore.deleteGroupLesson"
+            />
+          </template>
+          <template v-else>
+            <GroupLesson
+              :lesson="lesson[0]"
+              :day-name="dayName"
+              @open-modal="scheduleStore.openLessonModal"
+              @delete-lesson="scheduleStore.deleteGroupLesson"
+            />
           </template>
         </template>
-      </tbody>
+        <template v-else>
+          <tr>
+            <td>
+              <span class="lesson-number">{{ lessonNumber + 1 }}</span>
+            </td>
+            <td colspan="3">
+              <span class="lesson-name">Пропускная</span>
+            </td>
+            <td v-if="true">
+              <button class="button" @click="scheduleStore.openLessonModal(dayName, lessonNumber)">
+                <span class="material-icons"> add </span>
+              </button>
+            </td>
+          </tr>
+        </template>
+      </template>
     </template>
   </table>
 </template>
+<style>
+.right-border {
+  border-right: 1px solid lightgray;
+}
+</style>
