@@ -1,8 +1,13 @@
 import axios from 'axios'
 
-export async function putRequest(path: string, payload: object) {
+export async function putRequest(path: string, payload: object, username: string) {
+  const config = {
+    headers: {
+      username: username
+    }
+  }
   try {
-    await axios.put(path, payload)
+    const response = await axios.put(path, payload, config)
   } catch (error) {
     console.error(error)
   }

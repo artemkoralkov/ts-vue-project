@@ -1,8 +1,14 @@
 import axios from 'axios'
 
-export async function postRequest(path: string, payload: object) {
+export async function postRequest(path: string, payload: object, username: string) {
+  const config = {
+    headers: {
+      username: username
+    }
+  }
   try {
-    await axios.post(path, payload)
+    const response = await axios.post(path, payload, config)
+    return response.data
   } catch (error) {
     console.error(error)
   }
