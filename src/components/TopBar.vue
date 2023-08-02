@@ -91,14 +91,14 @@ export default defineComponent({
     </template>
     <template v-if="scheduleStore.selectedList === 'Преподаватели'">
       <ItemsSelection
-        :items="scheduleStore.teachers.map((teacher) => teacher.teacher_name)"
+        :items="scheduleStore.teachers.map((teacher: {teacher_name: string, faculty: string}) => teacher.teacher_name)"
         :placeholder="'Преподаватели'"
         @select-item="scheduleStore.selectTeacher"
       />
     </template>
     <template v-else-if="scheduleStore.selectedList === 'Группы'">
       <ItemsSelection
-        :items="scheduleStore.groups.map((teacher) => teacher.group_name)"
+        :items="scheduleStore.groups.map((group: {group_name: string, faculty: string}) => group.group_name)"
         :placeholder="'Группы'"
         @select-item="scheduleStore.selectGroup"
       />
