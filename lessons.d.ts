@@ -1,16 +1,20 @@
-interface Lesson {
-  day: Number
-  denominator: Boolean
-  faculty: String
-  first_group: Boolean
-  group_name: String
-  id: String
-  lesson_number: Number
-  lesson_title: String
-  lesson_type: String
-  numerator: Boolean
-  second_group: Boolean
-  teacher_name: String
+type Day = 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday'
+interface LessonDTO {
+  day: number
+  denominator: boolean
+  faculty: string
+  first_group: boolean
+  group_name: string
+  lesson_number: number
+  lesson_title: string
+  lesson_type: string
+  numerator: boolean
+  second_group: boolean
+  teacher_name: string
+}
+
+interface Lesson extends LessonDTO {
+  id: string
 }
 
 interface Lessons {
