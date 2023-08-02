@@ -14,8 +14,8 @@ export const useScheduleStore = defineStore('schedule', {
         'ТБФ (технология)': 'tbft',
         ДиНО: 'dino'
       },
-      path: 'http://127.0.0.1:8000',
-      // path: 'https://mspu-schedule-server.onrender.com',
+      // path: 'http://127.0.0.1:8000',
+      path: 'https://mspu-schedule-server.onrender.com',
       allTeachers: [],
       allGroups: [],
       groups: [],
