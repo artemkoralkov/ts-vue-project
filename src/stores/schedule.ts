@@ -1,6 +1,6 @@
 // import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
-import { getRequest } from '@/utils'
+import { deleteRequest, getRequest, postRequest, putRequest } from '@/utils'
 
 export const useScheduleStore = defineStore('schedule', {
   state: () => {
@@ -14,8 +14,8 @@ export const useScheduleStore = defineStore('schedule', {
         'ТБФ (технология)': 'tbft',
         ДиНО: 'dino'
       },
-      // path: 'http://127.0.0.1:8000',
-      path: 'https://mspu-schedule-server.onrender.com',
+      path: 'http://127.0.0.1:8000',
+      // path: 'https://mspu-schedule-server.onrender.com',
       allTeachers: [],
       allGroups: [],
       groups: [],
@@ -25,13 +25,16 @@ export const useScheduleStore = defineStore('schedule', {
       selectedList: '',
       teachers: [],
       detailedFlag: false,
-      teachersLessons: [] as Lessons | unknown,
-      groupsLessons: [] as Lessons | unknown,
+      teachersLessons: {} as Lessons,
+      groupsLessons: {} as Lessons,
       searchTerm: '',
       currentUser: '',
-      teacherToSendLesson: '',
-      groupToSendLesson: '',
-      editingLesson: {}
+      editingLesson: {},
+      showModal: false,
+      lessonFor: '',
+      previousLesson: {} as Lesson | undefined,
+      dayName: '' as Day,
+      lessonNumber: 0
     }
   },
 
@@ -68,16 +71,6 @@ export const useScheduleStore = defineStore('schedule', {
       window.scrollTo(0, 0)
     },
 
-    selectTeacherToSendLesson(teacher_name: string) {
-      this.teacherToSendLesson = teacher_name
-      console.log(this.teacherToSendLesson)
-    },
-
-    selectGroupToSendLesson(groupName: string) {
-      this.groupToSendLesson = groupName
-      console.log(this.groupToSendLesson)
-    },
-
     async selectGroup(group_name: string) {
       this.selectedGroup = group_name
       this.groupsLessons = await getRequest(
@@ -97,10 +90,80 @@ export const useScheduleStore = defineStore('schedule', {
         (group: { faculty: string; group_name: string }) => group.faculty === this.selectedFaculty
       )
     },
-    deleteLesson(day: number, lessonNumber: number) {},
+
+    async addTeacherLesson(dayName: Day, lessonNumber: number, lesson: LessonDTO) {
+      const newLesson: Lesson = await postRequest(`${this.path}/lessons`, lesson, this.currentUser)
+      this.teachersLessons[dayName][lessonNumber].push(newLesson)
+    },
+
+    async editTeacherLesson(
+      dayName: Day,
+      lessonNumber: number,
+      lessonId: string,
+      editedLesson: LessonDTO
+    ) {
+      await putRequest(`${this.path}/lessons/${lessonId}`, editedLesson, this.currentUser)
+      this.teachersLessons[dayName][lessonNumber] = this.teachersLessons[dayName][lessonNumber].map(
+        (obj) => {
+          if (obj.id == lessonId) {
+            return { id: lessonId, ...editedLesson }
+          }
+          return obj
+        }
+      )
+    },
+
+    async deleteTeacherLesson(lessonId: string, dayName: Day, lessonNumber: number) {
+      await deleteRequest(`${this.path}/lessons/${lessonId}`, this.currentUser)
+      this.teachersLessons[dayName][lessonNumber] = this.teachersLessons[dayName][
+        lessonNumber
+      ].filter((lesson) => lesson.id !== lessonId)
+    },
+
+    async addGroupLesson(dayName: Day, lessonNumber: number, lesson: LessonDTO) {
+      const newLesson: Lesson = await postRequest(`${this.path}/lessons`, lesson, this.currentUser)
+      this.groupsLessons[dayName][lessonNumber].push(newLesson)
+    },
+
+    async editGroupLesson(
+      dayName: Day,
+      lessonNumber: number,
+      lessonId: string,
+      editedLesson: LessonDTO
+    ) {
+      await putRequest(`${this.path}/lessons/${lessonId}`, editedLesson, this.currentUser)
+      this.groupsLessons[dayName][lessonNumber] = this.groupsLessons[dayName][lessonNumber].map(
+        (obj) => {
+          if (obj.id == lessonId) {
+            return { id: lessonId, ...editedLesson }
+          }
+          return obj
+        }
+      )
+    },
+
+    async deleteGroupLesson(lessonId: string, dayName: Day, lessonNumber: number) {
+      await deleteRequest(`${this.path}/lessons/${lessonId}`, this.currentUser)
+      this.groupsLessons[dayName][lessonNumber] = this.groupsLessons[dayName][lessonNumber].filter(
+        (lesson) => lesson.id !== lessonId
+      )
+    },
+
     async getData() {
       this.allTeachers = await getRequest(`${this.path}/teachers/`)
       this.allGroups = await getRequest(`${this.path}/lessons/groups`)
+    },
+
+    openLessonModal(dayName: Day, lessonNumber: number, lesson: Lesson | undefined = undefined) {
+      this.lessonFor =
+        this.selectedList === 'Преподаватели' ? this.selectedTeacher : this.selectedGroup
+      this.dayName = dayName
+      this.previousLesson = lesson
+      this.lessonNumber = lessonNumber
+      this.showModal = true
+    },
+    closeLessonModal() {
+      this.showModal = false
     }
   }
 })
