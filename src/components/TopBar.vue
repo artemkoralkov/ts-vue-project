@@ -3,16 +3,14 @@ import { defineComponent } from 'vue'
 import { useScheduleStore } from '@/stores/schedule'
 import { getTypeOfTheWeek } from '@/utils'
 import Modal from '@/components/Modal.vue'
-import TeacherSelection from '@/components/TeacherSelection.vue'
-import GroupSelection from '@/components/GroupSelection.vue'
 import { selectUser } from '@/utils'
 import { HmacSHA256, enc } from 'crypto-js'
+import ItemsSelection from '@/components/ItemsSelection.vue'
 export default defineComponent({
   name: 'TopBar',
   components: {
-    Modal,
-    TeacherSelection,
-    GroupSelection
+    ItemsSelection,
+    Modal
   },
   data() {
     return {
@@ -30,8 +28,6 @@ export default defineComponent({
       if (user) {
         this.scheduleStore.currentUser = user
         this.showModal = false
-
-        console.log(this.scheduleStore.currentUser)
       } else {
         this.isWrongPassword = true
       }
@@ -94,10 +90,18 @@ export default defineComponent({
       </div>
     </template>
     <template v-if="scheduleStore.selectedList === 'Преподаватели'">
-      <TeacherSelection @teacher-selection="scheduleStore.selectTeacher" />
+      <ItemsSelection
+        :items="scheduleStore.teachers.map((teacher) => teacher.teacher_name)"
+        :placeholder="'Преподаватели'"
+        @select-item="scheduleStore.selectTeacher"
+      />
     </template>
     <template v-else-if="scheduleStore.selectedList === 'Группы'">
-      <GroupSelection @group-selection="scheduleStore.selectGroup" />
+      <ItemsSelection
+        :items="scheduleStore.groups.map((teacher) => teacher.group_name)"
+        :placeholder="'Группы'"
+        @select-item="scheduleStore.selectGroup"
+      />
     </template>
     <template v-if="scheduleStore.selectedGroup">
       <h1 class="centred-text">
@@ -116,6 +120,18 @@ export default defineComponent({
 </template>
 
 <style lang="scss" scoped>
+.top-bar {
+  position: sticky;
+  top: 0;
+  background-color: #13a7cc;
+  min-width: 332px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
 .edit-button {
   position: absolute;
   top: 0;

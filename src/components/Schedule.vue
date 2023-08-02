@@ -4,7 +4,7 @@ import { useScheduleStore } from '@/stores/schedule'
 import GroupsLessonsTable from '@/components/GroupsLessons/GroupsLessonsTable.vue'
 import TeachersLessonsTable from '@/components/TeacherLessons/TeachersLessonsTable.vue'
 import TopBar from '@/components/TopBar.vue'
-import SendLessonToServerModal from '@/components/SendLessonToServerModal.vue'
+import LessonModal from '@/components/LessonModal.vue'
 import { getTypeOfTheWeek } from '@/utils'
 
 export default defineComponent({
@@ -12,35 +12,44 @@ export default defineComponent({
     GroupsLessonsTable,
     TeachersLessonsTable,
     TopBar,
-    SendLessonToServerModal
+    LessonModal
   },
   data() {
     return {
-      schedule: useScheduleStore(),
+      scheduleStore: useScheduleStore(),
       typeOfTheWeek: getTypeOfTheWeek()
     }
   },
   async beforeMount() {
-    await this.schedule.getData()
+    await this.scheduleStore.getData()
   }
 })
 </script>
 
 <template>
   <div class="container">
+    <LessonModal
+      :show-modal="scheduleStore.showModal"
+      :lesson-for="scheduleStore.lessonFor"
+      :previous-lesson="scheduleStore.previousLesson"
+      :day-name="scheduleStore.dayName"
+      :lesson-number="scheduleStore.lessonNumber"
+    />
     <TopBar />
     <div class="schedule-table">
-      <template v-if="schedule.selectedGroup">
-        <GroupsLessonsTable :lessons="schedule.groupsLessons" :faculty="schedule.selectedFaculty" />
+      <template v-if="scheduleStore.selectedGroup">
+        <GroupsLessonsTable
+          :lessons="scheduleStore.groupsLessons"
+          :faculty="scheduleStore.selectedFaculty"
+        />
       </template>
-      <template v-if="schedule.selectedTeacher">
+      <template v-if="scheduleStore.selectedTeacher">
         <TeachersLessonsTable
-          :lessons="schedule.teachersLessons"
-          :faculty="schedule.selectedFaculty"
+          :lessons="scheduleStore.teachersLessons"
+          :faculty="scheduleStore.selectedFaculty"
         />
       </template>
     </div>
-    <SendLessonToServerModal />
   </div>
 </template>
 
@@ -52,55 +61,16 @@ button {
   font: inherit;
 }
 
-.lesson-number {
-  @media screen {
-    font-size: 200%;
-  }
-
-  @media screen and (max-width: 400px) {
-    font-size: 150%;
-  }
-}
-
 .container {
   font-family: 'Lato', sans-serif;
 
   @media screen {
-    font-size: 130%;
+    font-size: 150%;
   }
 
   @media (max-width: 400px) {
     font-size: 80%;
   }
-}
-
-.top-bar {
-  position: sticky;
-  top: 0;
-  background-color: #13a7cc;
-  min-width: 332px;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
-}
-
-ul,
-li {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.listWrapper {
-  max-height: 100px;
-  overflow-y: auto;
-  text-align: center;
-}
-
-.listWrapper li:hover {
-  background: lightgray;
 }
 
 .schedule-table {
@@ -117,6 +87,16 @@ li {
   text-align: center;
 }
 
+.lesson-number {
+  @media screen {
+    font-size: 200%;
+  }
+
+  @media screen and (max-width: 400px) {
+    font-size: 150%;
+  }
+}
+
 .teacher-name,
 .group-name {
   color: #2979ff;
@@ -125,7 +105,6 @@ li {
 .lesson-name {
   font-size: larger;
 }
-
 .row-radio {
   margin-left: 10px;
 }
@@ -165,7 +144,6 @@ td {
 }
 
 .button {
-  padding: 0;
   border: none;
   background: none;
 }
@@ -175,13 +153,6 @@ td {
   width: 12%;
   min-height: 30px;
   min-width: 140px;
-  border-radius: 5px;
-}
-
-#search {
-  width: 25%;
-  min-height: 30px;
-  min-width: 130px;
   border-radius: 5px;
 }
 
@@ -195,17 +166,5 @@ td {
 
 tbody tr:last-child td {
   padding-bottom: 30px;
-}
-
-.top-bar {
-  position: sticky;
-  top: 0;
-  background-color: #13a7cc;
-  min-width: 332px;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
 }
 </style>

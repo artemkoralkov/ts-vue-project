@@ -1,25 +1,17 @@
-<template>
-  <template v-if="daysAndDates">
-    <thead class="thead">
-      <tr>
-        <th class="day-name" scope="col" colspan="1">
-          {{ daysAndDates[day].day }}
-        </th>
-        <th scope="col" colspan="3">
-          {{ daysAndDates[day].date }}
-        </th>
-      </tr>
-    </thead>
-  </template>
-</template>
 <script lang="ts">
+import { defineComponent } from 'vue'
 import getDateAndDay from '@/utils/getDateAndDay'
-export default {
+
+export default defineComponent({
   name: 'TableHead',
   props: {
     day: {
       type: String,
       default: ''
+    },
+    colspan: {
+      type: Number,
+      default: 2
     }
   },
   data() {
@@ -27,10 +19,22 @@ export default {
       daysAndDates: getDateAndDay()
     }
   }
-}
+})
 </script>
+<template>
+  <template v-if="daysAndDates">
+    <tr class="day-and-date">
+      <th class="day-name">
+        {{ daysAndDates[day].day }}
+      </th>
+      <th :colspan="colspan">
+        {{ daysAndDates[day].date }}
+      </th>
+    </tr>
+  </template>
+</template>
 <style>
-.thead {
+.day-and-date {
   border-bottom: 2px solid black;
   font-size: 150%;
 }
