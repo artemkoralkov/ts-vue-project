@@ -30,16 +30,16 @@ export default defineComponent({
       <span class="lesson-name">
         {{ lesson[0].lesson_title }}
         <template v-if="lesson[0].lesson_type"> ({{ lesson[0].lesson_type }}) </template>
-        <p class="line-break">
-          {{
-            lesson[0].first_group
-              ? 'первая подгруппа'
-              : lesson[0].second_group
-              ? 'вторая подгруппа'
-              : ''
-          }}
-        </p>
       </span>
+      <p class="line-break">
+        {{
+          lesson[0].first_group
+            ? 'первая подгруппа'
+            : lesson[0].second_group
+            ? 'вторая подгруппа'
+            : ''
+        }}
+      </p>
       <p class="teacher-name line-break">
         {{ lesson[0].teacher_name }}
       </p>
@@ -47,7 +47,7 @@ export default defineComponent({
     <!-- <td>
       {{ lesson[0].room_number?lesson[0].room_number:'' }}
     </td> -->
-    <td v-if="true" class="right-border">
+    <td v-if="isAdmin" class="right-border">
       <button
         class="button"
         @click="$emit('openModal', dayName, lesson[0].lesson_number, lesson[0])"
@@ -65,16 +65,16 @@ export default defineComponent({
       <span class="lesson-name">
         {{ lesson[1].lesson_title }}
         <template v-if="lesson[1].lesson_type"> ({{ lesson[1].lesson_type }}) </template>
-        <p class="line-break">
-          {{
-            lesson[1].first_group
-              ? 'первая подгруппа'
-              : lesson[1].second_group
-              ? 'вторая подгруппа'
-              : ''
-          }}
-        </p>
       </span>
+      <p class="line-break">
+        {{
+          lesson[1].first_group
+            ? 'первая подгруппа'
+            : lesson[1].second_group
+            ? 'вторая подгруппа'
+            : ''
+        }}
+      </p>
       <p class="teacher-name line-break">
         {{ lesson[1].teacher_name }}
       </p>
@@ -82,7 +82,7 @@ export default defineComponent({
     <!-- <td>
       {{ lesson[1].room_number?lesson[1].room_number:'' }}
     </td> -->
-    <td v-if="true">
+    <td v-if="isAdmin">
       <button
         class="button"
         @click="$emit('openModal', dayName, lesson[1].lesson_number, lesson[1])"
@@ -102,16 +102,16 @@ export default defineComponent({
       <span class="lesson-name">
         {{ lesson[2].lesson_title }}
         <template v-if="lesson[2].lesson_type"> ({{ lesson[2].lesson_type }}) </template>
-        <p class="line-break">
-          {{
-            lesson[2].first_group
-              ? 'первая подгруппа'
-              : lesson[2].second_group
-              ? 'вторая подгруппа'
-              : ''
-          }}
-        </p>
       </span>
+      <p class="line-break">
+        {{
+          lesson[2].first_group
+            ? 'первая подгруппа'
+            : lesson[2].second_group
+            ? 'вторая подгруппа'
+            : ''
+        }}
+      </p>
       <p class="teacher-name line-break">
         {{ lesson[2].teacher_name }}
       </p>
@@ -119,7 +119,7 @@ export default defineComponent({
     <!-- <td>
       {{ lesson[2].room_number?lesson[2].room_number:'' }}
     </td> -->
-    <td v-if="true">
+    <td v-if="isAdmin">
       <button
         class="button"
         @click="$emit('openModal', dayName, lesson[2].lesson_number, lesson[2])"

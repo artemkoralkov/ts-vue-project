@@ -29,17 +29,17 @@ export default defineComponent({
       <span class="lesson-name"
         >{{ lesson.lesson_title }}
         <template v-if="lesson.lesson_type"> ({{ lesson.lesson_type }}) </template>
-        <p v-if="lesson.first_group || lesson.second_group" class="line-break">
-          {{
-            lesson.first_group ? 'первая подгруппа' : lesson.second_group ? 'вторая подгруппа' : ''
-          }}
-        </p>
       </span>
+      <p v-if="lesson.first_group || lesson.second_group" class="line-break">
+        {{
+          lesson.first_group ? 'первая подгруппа' : lesson.second_group ? 'вторая подгруппа' : ''
+        }}
+      </p>
       <p class="teacher-name line-break">
         {{ lesson.teacher_name }}
       </p>
     </td>
-    <td v-if="true">
+    <td v-if="isAdmin">
       <button class="button" @click="$emit('openModal', dayName, lesson.lesson_number, lesson)">
         <span class="material-icons"> create </span>
       </button>

@@ -43,6 +43,7 @@ export default defineComponent({
                 <TeacherLessonNumerator
                   :lesson="lesson[0]"
                   :day-name="dayName"
+                  :is-admin="scheduleStore.isAdmin"
                   @open-modal="scheduleStore.openLessonModal"
                   @delete-lesson="scheduleStore.deleteTeacherLesson"
                 />
@@ -51,6 +52,7 @@ export default defineComponent({
                 <TeacherLessonDenominator
                   :lesson="lesson[0]"
                   :day-name="dayName"
+                  :is-admin="scheduleStore.isAdmin"
                   @open-modal="scheduleStore.openLessonModal"
                   @delete-lesson="scheduleStore.deleteTeacherLesson"
                 />
@@ -63,6 +65,7 @@ export default defineComponent({
                     )
                   "
                   :day-name="dayName"
+                  :is-admin="scheduleStore.isAdmin"
                   @open-modal="scheduleStore.openLessonModal"
                   @delete-lesson="scheduleStore.deleteTeacherLesson"
                 />
@@ -71,6 +74,7 @@ export default defineComponent({
                 <TeacherLesson
                   :lesson="lesson[0]"
                   :day-name="dayName"
+                  :is-admin="scheduleStore.isAdmin"
                   @open-modal="scheduleStore.openLessonModal"
                   @delete-lesson="scheduleStore.deleteTeacherLesson"
                 />
@@ -85,7 +89,7 @@ export default defineComponent({
                   <span class="lesson-name">Пропускная</span>
                 </td>
 
-                <td v-if="true">
+                <td v-if="scheduleStore.isAdmin">
                   <button
                     class="button"
                     @click="scheduleStore.openLessonModal(dayName, lessonNumber)"

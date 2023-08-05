@@ -5,4 +5,3 @@ import Schedule from './components/Schedule.vue'
 <template>
   <Schedule />
 </template>
-

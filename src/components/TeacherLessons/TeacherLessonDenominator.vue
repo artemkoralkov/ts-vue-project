@@ -28,7 +28,7 @@ export default defineComponent({
     <td class="lesson">
       <span class="lesson-name">Пропускная</span>
     </td>
-    <td class="buttons">
+    <td v-if="isAdmin">
       <button class="button" @click="$emit('openModal', dayName, lesson.lesson_number)">
         <span class="material-icons"> add </span>
       </button>
@@ -49,7 +49,7 @@ export default defineComponent({
         }}
       </p>
     </td>
-    <td v-if="true">
+    <td v-if="isAdmin">
       <button class="button" @click="$emit('openModal', dayName, lesson.lesson_number, lesson)">
         <span class="material-icons"> create </span>
       </button>

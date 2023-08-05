@@ -28,7 +28,7 @@ export default defineComponent({
     <td colspan="3">
       <span class="lesson-name">Пропускная</span>
     </td>
-    <td v-if="true">
+    <td v-if="isAdmin">
       <button class="button" @click="$emit('openModal', dayName, lesson.lesson_number)">
         <span class="material-icons"> add </span>
       </button>
@@ -39,17 +39,17 @@ export default defineComponent({
       <span class="lesson-name">
         {{ lesson.lesson_title }}
         <template v-if="lesson.lesson_type"> ({{ lesson.lesson_type }}) </template>
-        <p class="line-break">
-          {{
-            lesson.first_group ? 'первая подгруппа' : lesson.second_group ? 'вторая подгруппа' : ''
-          }}
-        </p>
       </span>
+      <p class="line-break">
+        {{
+          lesson.first_group ? 'первая подгруппа' : lesson.second_group ? 'вторая подгруппа' : ''
+        }}
+      </p>
       <p class="teacher-name line-break">
         {{ lesson.teacher_name }}
       </p>
     </td>
-    <td v-if="true">
+    <td v-if="isAdmin">
       <button class="button" @click="$emit('openModal', dayName, lesson.lesson_number, lesson)">
         <span class="material-icons"> create </span>
       </button>

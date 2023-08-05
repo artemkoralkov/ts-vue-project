@@ -75,6 +75,7 @@ export default defineComponent({
               <GroupLessonNumerator
                 :lesson="lesson[0]"
                 :day-name="dayName"
+                :is-admin="scheduleStore.isAdmin"
                 @open-modal="scheduleStore.openLessonModal"
                 @delete-lesson="scheduleStore.deleteGroupLesson"
               />
@@ -83,6 +84,7 @@ export default defineComponent({
               <GroupLessonDenominator
                 :lesson="lesson[0]"
                 :day-name="dayName"
+                :is-admin="scheduleStore.isAdmin"
                 @open-modal="scheduleStore.openLessonModal"
                 @delete-lesson="scheduleStore.deleteGroupLesson"
               />
@@ -91,6 +93,7 @@ export default defineComponent({
               <GroupLesson
                 :lesson="lesson[0]"
                 :day-name="dayName"
+                :is-admin="scheduleStore.isAdmin"
                 @open-modal="scheduleStore.openLessonModal"
                 @delete-lesson="scheduleStore.deleteGroupLesson"
               />
@@ -102,6 +105,7 @@ export default defineComponent({
               <GroupLessonNumeratorDenominator
                 :lesson="lesson"
                 :day-name="dayName"
+                :is-admin="scheduleStore.isAdmin"
                 @open-modal="scheduleStore.openLessonModal"
                 @delete-lesson="scheduleStore.deleteGroupLesson"
               />
@@ -118,6 +122,7 @@ export default defineComponent({
               <GroupLessonFirstGroupSecondGroup
                 :lesson="lesson"
                 :day-name="dayName"
+                :is-admin="scheduleStore.isAdmin"
                 @open-modal="scheduleStore.openLessonModal"
                 @delete-lesson="scheduleStore.deleteGroupLesson"
               />
@@ -126,6 +131,7 @@ export default defineComponent({
               <GroupLessonFirstGroupNumeratorSecondGroupNumerator
                 :lesson="lesson"
                 :day-name="dayName"
+                :is-admin="scheduleStore.isAdmin"
                 @open-modal="scheduleStore.openLessonModal"
                 @delete-lesson="scheduleStore.deleteGroupLesson"
               />
@@ -141,6 +147,7 @@ export default defineComponent({
               <GroupLessonFirstGroupDenominatorSecondGroupDenominator
                 :lesson="lesson"
                 :day-name="dayName"
+                :is-admin="scheduleStore.isAdmin"
                 @open-modal="scheduleStore.openLessonModal"
                 @delete-lesson="scheduleStore.deleteGroupLesson"
               />
@@ -157,6 +164,7 @@ export default defineComponent({
               <GroupLessonFirstGroupNumeratorSecondGroup
                 :lesson="lesson"
                 :day-name="dayName"
+                :is-admin="scheduleStore.isAdmin"
                 @open-modal="scheduleStore.openLessonModal"
                 @delete-lesson="scheduleStore.deleteGroupLesson"
               />
@@ -179,6 +187,7 @@ export default defineComponent({
               <GroupLessonFirstGroupDenominatorSecondGroup
                 :lesson="lesson"
                 :day-name="dayName"
+                :is-admin="scheduleStore.isAdmin"
                 @open-modal="scheduleStore.openLessonModal"
                 @delete-lesson="scheduleStore.deleteGroupLesson"
               />
@@ -195,6 +204,7 @@ export default defineComponent({
               <GroupLessonFirstGroupSecondGroupNumerator
                 :lesson="lesson"
                 :day-name="dayName"
+                :is-admin="scheduleStore.isAdmin"
                 @open-modal="scheduleStore.openLessonModal"
                 @delete-lesson="scheduleStore.deleteGroupLesson"
               />
@@ -211,6 +221,7 @@ export default defineComponent({
               <GroupLessonFirstGroupSecondGroupDenominator
                 :lesson="lesson"
                 :day-name="dayName"
+                :is-admin="scheduleStore.isAdmin"
                 @open-modal="scheduleStore.openLessonModal"
                 @delete-lesson="scheduleStore.deleteGroupLesson"
               />
@@ -231,6 +242,7 @@ export default defineComponent({
               <GroupLessonNumeratorWithGroups
                 :lesson="lesson"
                 :day-name="dayName"
+                :is-admin="scheduleStore.isAdmin"
                 @open-modal="scheduleStore.openLessonModal"
                 @delete-lesson="scheduleStore.deleteGroupLesson"
               />
@@ -248,6 +260,7 @@ export default defineComponent({
               <GroupLessonDenominatorWithGroups
                 :lesson="lesson"
                 :day-name="dayName"
+                :is-admin="scheduleStore.isAdmin"
                 @open-modal="scheduleStore.openLessonModal"
                 @delete-lesson="scheduleStore.deleteGroupLesson"
               />
@@ -258,6 +271,7 @@ export default defineComponent({
               <GroupLessonFirstGroupSecondGroupNumeratorDenominator
                 :lesson="lesson"
                 :day-name="dayName"
+                :is-admin="scheduleStore.isAdmin"
                 @open-modal="scheduleStore.openLessonModal"
                 @delete-lesson="scheduleStore.deleteGroupLesson"
               />
@@ -276,6 +290,7 @@ export default defineComponent({
               <GroupLessonFirstGroupNumeratorDenominatorSecondGroup
                 :lesson="lesson"
                 :day-name="dayName"
+                :is-admin="scheduleStore.isAdmin"
                 @open-modal="scheduleStore.openLessonModal"
                 @delete-lesson="scheduleStore.deleteGroupLesson"
               />
@@ -293,6 +308,7 @@ export default defineComponent({
               <GroupLessonFirstGroupDenominatorSecondGroupNumeratorDenominator
                 :lesson="lesson"
                 :day-name="dayName"
+                :is-admin="scheduleStore.isAdmin"
                 @open-modal="scheduleStore.openLessonModal"
                 @delete-lesson="scheduleStore.deleteGroupLesson"
               />
@@ -310,6 +326,7 @@ export default defineComponent({
               <GroupLessonDenominatorWithGroups
                 :lesson="lesson"
                 :day-name="dayName"
+                :is-admin="scheduleStore.isAdmin"
                 @open-modal="scheduleStore.openLessonModal"
                 @delete-lesson="scheduleStore.deleteGroupLesson"
               />
@@ -319,6 +336,7 @@ export default defineComponent({
             <GroupLessonNumeratorDenominatorWithGroups
               :lesson="lesson"
               :day-name="dayName"
+              :is-admin="scheduleStore.isAdmin"
               @open-modal="scheduleStore.openLessonModal"
               @delete-lesson="scheduleStore.deleteGroupLesson"
             />
@@ -327,6 +345,7 @@ export default defineComponent({
             <GroupLesson
               :lesson="lesson[0]"
               :day-name="dayName"
+              :is-admin="scheduleStore.isAdmin"
               @open-modal="scheduleStore.openLessonModal"
               @delete-lesson="scheduleStore.deleteGroupLesson"
             />
@@ -340,7 +359,7 @@ export default defineComponent({
             <td colspan="3">
               <span class="lesson-name">Пропускная</span>
             </td>
-            <td v-if="true">
+            <td v-if="scheduleStore.isAdmin">
               <button class="button" @click="scheduleStore.openLessonModal(dayName, lessonNumber)">
                 <span class="material-icons"> add </span>
               </button>

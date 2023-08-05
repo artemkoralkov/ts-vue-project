@@ -1,4 +1,3 @@
-// import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { deleteRequest, getRequest, postRequest, putRequest } from '@/utils'
 
@@ -16,19 +15,20 @@ export const useScheduleStore = defineStore('schedule', {
       },
       // path: 'http://127.0.0.1:8000',
       path: 'https://mspu-schedule-server.onrender.com',
-      allTeachers: [],
-      allGroups: [],
-      groups: [],
+      allTeachers: [] as Teacher[],
+      allGroups: [] as Group[],
+      groups: [] as Group[],
       selectedGroup: '',
       selectedFaculty: '',
       selectedTeacher: '',
       selectedList: '',
-      teachers: [],
+      teachers: [] as Teacher[],
       detailedFlag: false,
       teachersLessons: {} as Lessons,
       groupsLessons: {} as Lessons,
       searchTerm: '',
       currentUser: '',
+      isAdmin: false,
       editingLesson: {},
       showModal: false,
       lessonFor: '',
@@ -152,6 +152,33 @@ export const useScheduleStore = defineStore('schedule', {
     async getData() {
       this.allTeachers = await getRequest(`${this.path}/teachers/`)
       this.allGroups = await getRequest(`${this.path}/lessons/groups`)
+    },
+
+    async login(password: string) {
+      this.currentUser = await postRequest(`${this.path}/users/login`, { password })
+      this.isAdmin = this.isAdminAllowed()
+    },
+
+    isAdminAllowed() {
+      const adminData: AdminData = {
+        admin: null, // null означает, что у администратора нет ограничения по факультету
+        fif_admin: ['ФИФ'],
+        ff_admin: ['ФФ'],
+        dino_admin: ['ДиНО'],
+        tbf_admin: ['ТБФ (технология)', 'ТБФ (биология)'],
+        ffk_admin: ['ФФК']
+      }
+
+      // Проверяем, есть ли текущий пользователь в словаре adminData
+      if (Object.prototype.hasOwnProperty.call(adminData, this.currentUser)) {
+        const allowedFaculty = adminData[this.currentUser]
+
+        // Проверяем, соответствует ли выбранный факультет ограничению (если есть)
+        if (!allowedFaculty || allowedFaculty.includes(this.selectedFaculty)) {
+          return true
+        }
+      }
+      return false
     },
 
     openLessonModal(dayName: Day, lessonNumber: number, lesson: Lesson | undefined = undefined) {

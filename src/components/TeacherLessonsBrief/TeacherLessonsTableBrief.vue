@@ -1,6 +1,8 @@
 <script lang="ts">
 import getDateAndDay from '@/utils/getDateAndDay'
-import { defineComponent, PropType } from 'vue'
+import { defineComponent } from 'vue'
+import type { PropType } from 'vue'
+
 export default defineComponent({
   name: 'TeacherLessonsTableBrief',
   props: {
@@ -29,7 +31,7 @@ export default defineComponent({
           <th class="table-head">№</th>
         </tr>
         <tr>
-          <th v-for="(lesson, dayName, index) in lessons" :key="lesson" class="table-head">
+          <th v-for="(lesson, dayName, index) in lessons" :key="index" class="table-head">
             {{ briefRusDayNames[index] }}
           </th>
         </tr>

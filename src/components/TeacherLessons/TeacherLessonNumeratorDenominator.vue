@@ -42,7 +42,7 @@ export default defineComponent({
         }}
       </p>
     </td>
-    <td v-if="true">
+    <td v-if="isAdmin">
       <button
         class="button"
         @click="$emit('openModal', dayName, lesson[0].lesson_number, lesson[0])"
@@ -76,7 +76,7 @@ export default defineComponent({
         }}
       </p>
     </td>
-    <td v-if="true">
+    <td v-if="isAdmin">
       <button
         class="button"
         @click="$emit('openModal', dayName, lesson[1].lesson_number, lesson[1])"
