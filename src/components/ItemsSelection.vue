@@ -1,5 +1,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
+import type { PropType } from 'vue'
 
 export default defineComponent({
   name: 'ItemsSelection',
@@ -11,7 +12,7 @@ export default defineComponent({
   },
   props: {
     items: {
-      type: Array,
+      type: Array as PropType<string[]>,
       required: true
     },
     placeholder: {
@@ -20,7 +21,7 @@ export default defineComponent({
     }
   },
   methods: {
-    selectItem(itemName) {
+    selectItem(itemName: string) {
       this.searchTerm = ''
       this.$emit('selectItem', itemName)
     }
@@ -30,9 +31,7 @@ export default defineComponent({
       if (this.searchTerm === '') {
         return []
       }
-      return this.items.filter((item: string) =>
-        item.toLowerCase().includes(this.searchTerm.toLowerCase())
-      )
+      return this.items.filter((item) => item.toLowerCase().includes(this.searchTerm.toLowerCase()))
     }
   }
 })
@@ -44,7 +43,7 @@ export default defineComponent({
     :class="$attrs.class"
     v-model="searchTerm"
     type="text"
-    :placeholder="this.placeholder"
+    :placeholder="placeholder"
     autocomplete="off"
   />
   <div class="listWrapper">
