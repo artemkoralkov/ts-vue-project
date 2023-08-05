@@ -14,6 +14,7 @@ const dayNumbers = {
   Friday: 5,
   Saturday: 6
 }
+
 export default defineComponent({
   name: 'LessonModal',
   components: {
@@ -30,7 +31,8 @@ export default defineComponent({
       default: false
     },
     previousLesson: {
-      type: Object as PropType<Lesson>
+      type: Object as PropType<Lesson>,
+      default: undefined
     },
     dayName: {
       type: String as PropType<Day>,
@@ -60,7 +62,8 @@ export default defineComponent({
       groupToSendLesson: this.previousLesson?.group_name || '',
       isLessonNameErrored: false,
       isGroupNameErrored: false,
-      isTeacherNameErrored: false
+      isTeacherNameErrored: false,
+      lessonTypes: ['лк', 'лб', 'лз', 'пз', 'пр', 'см']
     }
   },
   updated() {
@@ -68,32 +71,24 @@ export default defineComponent({
   },
   methods: {
     async sendLesson() {
+      const isGroupSelected = this.scheduleStore.selectedList === 'Группы'
+      const isTeacherSelected = this.scheduleStore.selectedList === 'Преподаватели'
       this.isLessonNameErrored = !this.lessonName
-      if (this.scheduleStore.selectedList === 'Преподаватели' && !this.groupToSendLesson) {
-        this.isGroupNameErrored = true
-      } else if (this.scheduleStore.selectedList === 'Группы' && !this.teacherToSendLesson) {
-        this.isTeacherNameErrored = true
-      } else {
-        this.isTeacherNameErrored = false
-        this.isGroupNameErrored = false
-      }
+      this.isGroupNameErrored = isTeacherSelected && !this.groupToSendLesson
+      this.isTeacherNameErrored = isGroupSelected && !this.teacherToSendLesson
+
       if (!this.isLessonNameErrored && !this.isGroupNameErrored && !this.isTeacherNameErrored) {
         const lesson: LessonDTO = {
           lesson_title: this.lessonName,
-          group_name:
-            this.scheduleStore.selectedList === 'Преподаватели'
-              ? this.groupToSendLesson
-              : this.scheduleStore.selectedGroup,
-          teacher_name:
-            this.scheduleStore.selectedList === 'Преподаватели'
-              ? this.scheduleStore.selectedTeacher
-              : this.teacherToSendLesson,
-          faculty:
-            this.scheduleStore.selectedList === 'Преподаватели'
-              ? this.scheduleStore.allGroups.find(
-                  (group) => group.group_name === this.groupToSendLesson
-                ).faculty
-              : this.scheduleStore.selectedFaculty,
+          group_name: isTeacherSelected ? this.groupToSendLesson : this.scheduleStore.selectedGroup,
+          teacher_name: isTeacherSelected
+            ? this.scheduleStore.selectedTeacher
+            : this.teacherToSendLesson,
+          faculty: isTeacherSelected
+            ? this.scheduleStore.allGroups.find(
+                (group) => group.group_name === this.groupToSendLesson
+              ).faculty
+            : this.scheduleStore.selectedFaculty,
           lesson_type: this.lessonType,
           numerator: this.lessonWeek === 'numerator',
           denominator: this.lessonWeek === 'denominator',
@@ -105,28 +100,19 @@ export default defineComponent({
         if (this.previousLesson) {
           const { id, ...previousLessonWithoutId } = this.previousLesson
           if (!isLessonsDTOsEqual(previousLessonWithoutId as LessonDTO, lesson)) {
-            if (this.scheduleStore.selectedList === 'Группы') {
-              await this.scheduleStore.editGroupLesson(
-                this.dayName,
-                this.lessonNumber,
-                this.previousLesson.id,
-                lesson
-              )
-            } else {
-              await this.scheduleStore.editTeacherLesson(
-                this.dayName,
-                this.lessonNumber,
-                this.previousLesson.id,
-                lesson
-              )
-            }
+            lesson.numerator = this.previousLesson.numerator
+            lesson.denominator = this.previousLesson.denominator
+            const editFunction = isGroupSelected ? 'editGroupLesson' : 'editTeacherLesson'
+            await this.scheduleStore[editFunction](
+              this.dayName,
+              this.lessonNumber,
+              this.previousLesson.id,
+              lesson
+            )
           }
         } else {
-          if (this.scheduleStore.selectedList === 'Группы') {
-            await this.scheduleStore.addGroupLesson(this.dayName, this.lessonNumber, lesson)
-          } else {
-            await this.scheduleStore.addTeacherLesson(this.dayName, this.lessonNumber, lesson)
-          }
+          const addFunction = isGroupSelected ? 'addGroupLesson' : 'addTeacherLesson'
+          await this.scheduleStore[addFunction](this.dayName, this.lessonNumber, lesson)
         }
         this.scheduleStore.closeLessonModal()
       }
@@ -193,19 +179,13 @@ export default defineComponent({
             </template>
           </fieldset>
           <h3>Вид занятия</h3>
-          <fieldset class="form-group lesson-radio">
-            <div>
-              <input type="radio" id="lecture" value="лк" v-model="lessonType" />
-              <label for="lecture">лк</label>
-            </div>
-            <div>
-              <input type="radio" id="laboratory" value="лб" v-model="lessonType" />
-              <label for="laboratory">лб</label>
-            </div>
-            <div>
-              <input type="radio" id="practice" value="пз" v-model="lessonType" />
-              <label for="practice">пз</label>
-            </div>
+          <fieldset class="form-group">
+            <select v-model="lessonType">
+              <option disabled value="">Выберите тип занятия</option>
+              <option v-for="lessonType in lessonTypes" :key="lessonType">
+                {{ lessonType }}
+              </option>
+            </select>
           </fieldset>
           <h3>Периодичность пары</h3>
           <fieldset class="form-group lesson-radio">

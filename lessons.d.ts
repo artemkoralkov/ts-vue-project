@@ -25,3 +25,17 @@ interface Lessons {
   Friday: Lesson[][]
   Saturday: Lesson[][]
 }
+
+interface AdminData {
+  [username: string]: string[] | null
+}
+
+interface Group {
+  faculty: string
+  group_name: string
+}
+
+interface Teacher {
+  faculty: string
+  teacher_name: string
+}
