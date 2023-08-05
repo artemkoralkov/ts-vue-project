@@ -3,8 +3,6 @@ import { defineComponent } from 'vue'
 import { useScheduleStore } from '@/stores/schedule'
 import { getTypeOfTheWeek } from '@/utils'
 import Modal from '@/components/Modal.vue'
-import { selectUser } from '@/utils'
-import { HmacSHA256, enc } from 'crypto-js'
 import ItemsSelection from '@/components/ItemsSelection.vue'
 export default defineComponent({
   name: 'TopBar',
@@ -23,10 +21,8 @@ export default defineComponent({
   },
   methods: {
     async login() {
-      const hash = HmacSHA256(this.password, import.meta.env.VITE_CRYPT_SALT)
-      const user = selectUser(enc.Base64.stringify(hash))
-      if (user) {
-        this.scheduleStore.currentUser = user
+      await this.scheduleStore.login(this.password)
+      if (this.scheduleStore.currentUser) {
         this.showModal = false
       } else {
         this.isWrongPassword = true
@@ -91,14 +87,14 @@ export default defineComponent({
     </template>
     <template v-if="scheduleStore.selectedList === 'Преподаватели'">
       <ItemsSelection
-        :items="scheduleStore.teachers.map((teacher: {teacher_name: string, faculty: string}) => teacher.teacher_name)"
+        :items="scheduleStore.teachers.map((teacher) => teacher.teacher_name)"
         :placeholder="'Преподаватели'"
         @select-item="scheduleStore.selectTeacher"
       />
     </template>
     <template v-else-if="scheduleStore.selectedList === 'Группы'">
       <ItemsSelection
-        :items="scheduleStore.groups.map((group: {group_name: string, faculty: string}) => group.group_name)"
+        :items="scheduleStore.groups.map((group) => group.group_name)"
         :placeholder="'Группы'"
         @select-item="scheduleStore.selectGroup"
       />
