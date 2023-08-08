@@ -3,10 +3,10 @@ import { defineComponent } from 'vue'
 import type { PropType } from 'vue'
 import EditLessonButton from '@/components/buttons/EditLessonButton.vue'
 import DeleteLessonButton from '@/components/buttons/DeleteLessonButton.vue'
-import CreateLessonButton from "@/components/buttons/CreateLessonButton.vue";
+import CreateLessonButton from '@/components/buttons/CreateLessonButton.vue'
 export default defineComponent({
   name: 'GroupLessonFirstGroupSecondGroupDenominator',
-  components: {CreateLessonButton, DeleteLessonButton, EditLessonButton },
+  components: { CreateLessonButton, DeleteLessonButton, EditLessonButton },
   props: {
     lesson: {
       type: Array as PropType<Lesson[]>,
@@ -57,9 +57,7 @@ export default defineComponent({
       <span class="lesson-name"> Пропускная </span>
     </td>
     <td v-if="isAdmin">
-      <td v-if="isAdmin">
-        <CreateLessonButton :day-name="dayName" :lesson-number="lesson[0].lesson_number" />
-      </td>
+      <CreateLessonButton :day-name="dayName" :lesson-number="lesson[0].lesson_number" />
     </td>
   </tr>
   <tr>
