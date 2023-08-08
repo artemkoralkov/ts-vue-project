@@ -13,8 +13,8 @@ export const useScheduleStore = defineStore('schedule', {
         'ТБФ (технология)': 'tbft',
         ДиНО: 'dino'
       },
-      // path: 'http://127.0.0.1:8000',
-      path: 'https://mspu-schedule-server.onrender.com',
+      path: 'http://127.0.0.1:8000',
+      // path: 'https://mspu-schedule-server.onrender.com',
       allTeachers: [] as Teacher[],
       allGroups: [] as Group[],
       groups: [] as Group[],
@@ -91,62 +91,60 @@ export const useScheduleStore = defineStore('schedule', {
       )
     },
 
-    async addTeacherLesson(dayName: Day, lessonNumber: number, lesson: LessonDTO) {
+    async addLesson(dayName: Day, lessonNumber: number, lesson: LessonDTO) {
       const newLesson: Lesson = await postRequest(`${this.path}/lessons`, lesson, this.currentUser)
-      this.teachersLessons[dayName][lessonNumber].push(newLesson)
+      if (this.selectedList === 'Преподаватели') {
+        this.teachersLessons[dayName][lessonNumber].push(newLesson)
+      } else {
+        this.groupsLessons[dayName][lessonNumber].push(newLesson)
+      }
     },
 
-    async editTeacherLesson(
+    async editLesson(
       dayName: Day,
       lessonNumber: number,
       lessonId: string,
       editedLesson: LessonDTO
     ) {
       await putRequest(`${this.path}/lessons/${lessonId}`, editedLesson, this.currentUser)
-      this.teachersLessons[dayName][lessonNumber] = this.teachersLessons[dayName][lessonNumber].map(
-        (obj) => {
+      if (this.selectedList === 'Преподаватели') {
+        this.teachersLessons[dayName][lessonNumber] = this.teachersLessons[dayName][
+          lessonNumber
+        ].map((obj) => {
           if (obj.id == lessonId) {
             return { id: lessonId, ...editedLesson }
           }
           return obj
-        }
-      )
-    },
-
-    async deleteTeacherLesson(lessonId: string, dayName: Day, lessonNumber: number) {
-      await deleteRequest(`${this.path}/lessons/${lessonId}`, this.currentUser)
-      this.teachersLessons[dayName][lessonNumber] = this.teachersLessons[dayName][
-        lessonNumber
-      ].filter((lesson) => lesson.id !== lessonId)
-    },
-
-    async addGroupLesson(dayName: Day, lessonNumber: number, lesson: LessonDTO) {
-      const newLesson: Lesson = await postRequest(`${this.path}/lessons`, lesson, this.currentUser)
-      this.groupsLessons[dayName][lessonNumber].push(newLesson)
-    },
-
-    async editGroupLesson(
-      dayName: Day,
-      lessonNumber: number,
-      lessonId: string,
-      editedLesson: LessonDTO
-    ) {
-      await putRequest(`${this.path}/lessons/${lessonId}`, editedLesson, this.currentUser)
-      this.groupsLessons[dayName][lessonNumber] = this.groupsLessons[dayName][lessonNumber].map(
-        (obj) => {
-          if (obj.id == lessonId) {
-            return { id: lessonId, ...editedLesson }
+        })
+      } else {
+        this.groupsLessons[dayName][lessonNumber] = this.groupsLessons[dayName][lessonNumber].map(
+          (obj) => {
+            if (obj.id == lessonId) {
+              return { id: lessonId, ...editedLesson }
+            }
+            return obj
           }
-          return obj
-        }
-      )
+        )
+      }
     },
 
-    async deleteGroupLesson(lessonId: string, dayName: Day, lessonNumber: number) {
-      await deleteRequest(`${this.path}/lessons/${lessonId}`, this.currentUser)
-      this.groupsLessons[dayName][lessonNumber] = this.groupsLessons[dayName][lessonNumber].filter(
-        (lesson) => lesson.id !== lessonId
-      )
+    async deleteLesson(lessonId: string, dayName: Day, lessonNumber: number) {
+      if (lessonId.includes(', ')) {
+        for (const id of lessonId.split(', ')) {
+          await deleteRequest(`${this.path}/lessons/${id}`, this.currentUser)
+        }
+      } else {
+        await deleteRequest(`${this.path}/lessons/${lessonId}`, this.currentUser)
+      }
+      if (this.selectedList === 'Преподаватели') {
+        this.teachersLessons[dayName][lessonNumber] = this.teachersLessons[dayName][
+          lessonNumber
+        ].filter((lesson) => lesson.id !== lessonId)
+      } else {
+        this.groupsLessons[dayName][lessonNumber] = this.groupsLessons[dayName][
+          lessonNumber
+        ].filter((lesson) => lesson.id !== lessonId)
+      }
     },
 
     async getData() {
