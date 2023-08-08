@@ -1,8 +1,12 @@
 <script lang="ts">
-import { defineComponent } from 'vue'
 import type { PropType } from 'vue'
+import { defineComponent } from 'vue'
+import EditLessonButton from '@/components/buttons/EditLessonButton.vue'
+import DeleteLessonButton from '@/components/buttons/DeleteLessonButton.vue'
+
 export default defineComponent({
   name: 'GroupLesson',
+  components: { DeleteLessonButton, EditLessonButton },
   props: {
     lesson: {
       type: Object as PropType<Lesson>,
@@ -16,8 +20,7 @@ export default defineComponent({
       type: Boolean,
       default: false
     }
-  },
-  emits: ['deleteLesson', 'openModal']
+  }
 })
 </script>
 <template>
@@ -40,15 +43,8 @@ export default defineComponent({
       </p>
     </td>
     <td v-if="isAdmin">
-      <button class="button" @click="$emit('openModal', dayName, lesson.lesson_number, lesson)">
-        <span class="material-icons"> create </span>
-      </button>
-      <button
-        class="button"
-        @click="$emit('deleteLesson', lesson.id, dayName, lesson.lesson_number)"
-      >
-        <span class="material-icons">delete</span>
-      </button>
+      <EditLessonButton :day-name="dayName" :lesson="lesson" />
+      <DeleteLessonButton :day-name="dayName" :lesson="lesson" />
     </td>
   </tr>
 </template>

@@ -102,8 +102,7 @@ export default defineComponent({
           if (!isLessonsDTOsEqual(previousLessonWithoutId as LessonDTO, lesson)) {
             lesson.numerator = this.previousLesson.numerator
             lesson.denominator = this.previousLesson.denominator
-            const editFunction = isGroupSelected ? 'editGroupLesson' : 'editTeacherLesson'
-            await this.scheduleStore[editFunction](
+            await this.scheduleStore.editLesson(
               this.dayName,
               this.lessonNumber,
               this.previousLesson.id,
@@ -111,8 +110,7 @@ export default defineComponent({
             )
           }
         } else {
-          const addFunction = isGroupSelected ? 'addGroupLesson' : 'addTeacherLesson'
-          await this.scheduleStore[addFunction](this.dayName, this.lessonNumber, lesson)
+          await this.scheduleStore.addLesson(this.dayName, this.lessonNumber, lesson)
         }
         this.scheduleStore.closeLessonModal()
       }

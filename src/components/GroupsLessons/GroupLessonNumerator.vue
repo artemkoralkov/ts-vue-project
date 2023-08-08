@@ -1,24 +1,27 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import type { PropType } from 'vue'
+import EditLessonButton from '@/components/buttons/EditLessonButton.vue'
+import DeleteLessonButton from '@/components/buttons/DeleteLessonButton.vue'
+import CreateLessonButton from '@/components/buttons/CreateLessonButton.vue'
 
 export default defineComponent({
   name: 'GroupLessonNumerator',
+  components: { CreateLessonButton, DeleteLessonButton, EditLessonButton },
   props: {
     lesson: {
       type: Object as PropType<Lesson>,
       required: true
     },
     dayName: {
-      type: String,
+      type: String as PropType<Day>,
       default: ''
     },
     isAdmin: {
       type: Boolean,
       default: false
     }
-  },
-  emits: ['deleteLesson', 'openModal']
+  }
 })
 </script>
 <template>
@@ -44,15 +47,8 @@ export default defineComponent({
       {{ lesson.room_number?lesson.room_number:'' }}
     </td>` -->
     <td v-if="isAdmin">
-      <button class="button" @click="$emit('openModal', dayName, lesson.lesson_number, lesson)">
-        <span class="material-icons"> create </span>
-      </button>
-      <button
-        class="button"
-        @click="$emit('deleteLesson', lesson.id, dayName, lesson.lesson_number)"
-      >
-        <span class="material-icons">delete</span>
-      </button>
+      <EditLessonButton :day-name="dayName" :lesson="lesson" />
+      <DeleteLessonButton :day-name="dayName" :lesson="lesson" />
     </td>
   </tr>
   <tr>
@@ -60,9 +56,7 @@ export default defineComponent({
       <span class="lesson-name">Пропускная</span>
     </td>
     <td v-if="isAdmin" colspan="2">
-      <button class="button" @click="$emit('openModal', dayName, lesson.lesson_number)">
-        <span class="material-icons"> add </span>
-      </button>
+      <CreateLessonButton :day-name="dayName" :lesson-number="lesson.lesson_number" />
     </td>
   </tr>
 </template>

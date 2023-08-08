@@ -1,21 +1,26 @@
 <script lang="ts">
 import type { PropType } from 'vue'
 import { defineComponent } from 'vue'
+import EditLessonButton from '@/components/buttons/EditLessonButton.vue'
+import DeleteLessonButton from '@/components/buttons/DeleteLessonButton.vue'
 
 export default defineComponent({
   name: 'TeacherLessonNumeratorDenominator',
+  components: { DeleteLessonButton, EditLessonButton },
   props: {
     lesson: {
       type: Array as PropType<Lesson[]>,
       required: true
     },
-    dayName: String as PropType<Day>,
+    dayName: {
+      type: String as PropType<Day>,
+      default: ''
+    },
     isAdmin: {
       type: Boolean,
       default: false
     }
-  },
-  emits: ['deleteLesson', 'openModal']
+  }
 })
 </script>
 
@@ -43,18 +48,8 @@ export default defineComponent({
       </p>
     </td>
     <td v-if="isAdmin">
-      <button
-        class="button"
-        @click="$emit('openModal', dayName, lesson[0].lesson_number, lesson[0])"
-      >
-        <span class="material-icons"> create </span>
-      </button>
-      <button
-        class="button"
-        @click="$emit('deleteLesson', lesson[0].id, dayName, lesson[0].lesson_number)"
-      >
-        <span class="material-icons">delete</span>
-      </button>
+      <EditLessonButton :day-name="dayName" :lesson="lesson[0]" />
+      <DeleteLessonButton :day-name="dayName" :lesson="lesson[0]" />
     </td>
   </tr>
   <tr>
@@ -77,18 +72,8 @@ export default defineComponent({
       </p>
     </td>
     <td v-if="isAdmin">
-      <button
-        class="button"
-        @click="$emit('openModal', dayName, lesson[1].lesson_number, lesson[1])"
-      >
-        <span class="material-icons"> create </span>
-      </button>
-      <button
-        class="button"
-        @click="$emit('deleteLesson', lesson[1].id, dayName, lesson[1].lesson_number)"
-      >
-        <span class="material-icons">delete</span>
-      </button>
+      <EditLessonButton :day-name="dayName" :lesson="lesson[1]" />
+      <DeleteLessonButton :day-name="dayName" :lesson="lesson[1]" />
     </td>
   </tr>
 </template>

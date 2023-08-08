@@ -7,10 +7,12 @@ import TableHead from '../TableHead.vue'
 import { useScheduleStore } from '@/stores/schedule'
 import type { PropType } from 'vue'
 import { defineComponent } from 'vue'
+import CreateLessonButton from '@/components/buttons/CreateLessonButton.vue'
 
 export default defineComponent({
   name: 'TeachersLessonsTable',
   components: {
+    CreateLessonButton,
     TableHead,
     TeacherLesson,
     TeacherLessonNumerator,
@@ -44,8 +46,6 @@ export default defineComponent({
                   :lesson="lesson[0]"
                   :day-name="dayName"
                   :is-admin="scheduleStore.isAdmin"
-                  @open-modal="scheduleStore.openLessonModal"
-                  @delete-lesson="scheduleStore.deleteTeacherLesson"
                 />
               </template>
               <template v-else-if="lesson[0].denominator && lesson.length === 1">
@@ -53,8 +53,6 @@ export default defineComponent({
                   :lesson="lesson[0]"
                   :day-name="dayName"
                   :is-admin="scheduleStore.isAdmin"
-                  @open-modal="scheduleStore.openLessonModal"
-                  @delete-lesson="scheduleStore.deleteTeacherLesson"
                 />
               </template>
               <template v-else-if="lesson.length > 1">
@@ -66,8 +64,6 @@ export default defineComponent({
                   "
                   :day-name="dayName"
                   :is-admin="scheduleStore.isAdmin"
-                  @open-modal="scheduleStore.openLessonModal"
-                  @delete-lesson="scheduleStore.deleteTeacherLesson"
                 />
               </template>
               <template v-else>
@@ -75,8 +71,6 @@ export default defineComponent({
                   :lesson="lesson[0]"
                   :day-name="dayName"
                   :is-admin="scheduleStore.isAdmin"
-                  @open-modal="scheduleStore.openLessonModal"
-                  @delete-lesson="scheduleStore.deleteTeacherLesson"
                 />
               </template>
             </template>
@@ -90,12 +84,7 @@ export default defineComponent({
                 </td>
 
                 <td v-if="scheduleStore.isAdmin">
-                  <button
-                    class="button"
-                    @click="scheduleStore.openLessonModal(dayName, lessonNumber)"
-                  >
-                    <span class="material-icons"> add </span>
-                  </button>
+                  <CreateLessonButton :day-name="dayName" :lesson-number="lessonNumber" />
                 </td>
               </tr>
             </template>

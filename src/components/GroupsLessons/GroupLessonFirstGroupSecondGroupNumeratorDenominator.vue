@@ -1,24 +1,26 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import type { PropType } from 'vue'
+import EditLessonButton from '@/components/buttons/EditLessonButton.vue'
+import DeleteLessonButton from '@/components/buttons/DeleteLessonButton.vue'
 
 export default defineComponent({
   name: 'GroupLessonFirstGroupSecondGroupNumeratorDenominator',
+  components: { DeleteLessonButton, EditLessonButton },
   props: {
     lesson: {
       type: Array as PropType<Lesson[]>,
       required: true
     },
     dayName: {
-      type: String,
+      type: String as PropType<Day>,
       default: ''
     },
     isAdmin: {
       type: Boolean,
       default: false
     }
-  },
-  emits: ['deleteLesson', 'openModal']
+  }
 })
 </script>
 <template>
@@ -48,18 +50,8 @@ export default defineComponent({
       {{ lesson[0].room_number?lesson[0].room_number:'' }}
     </td> -->
     <td v-if="isAdmin" class="right-border" rowspan="2">
-      <button
-        class="button"
-        @click="$emit('openModal', dayName, lesson[0].lesson_number, lesson[0])"
-      >
-        <span class="material-icons"> create </span>
-      </button>
-      <button
-        class="button"
-        @click="$emit('deleteLesson', lesson[0].id, dayName, lesson[0].lesson_number)"
-      >
-        <span class="material-icons">delete</span>
-      </button>
+      <EditLessonButton :day-name="dayName" :lesson="lesson[0]" />
+      <DeleteLessonButton :day-name="dayName" :lesson="lesson[0]" />
     </td>
     <td>
       <span class="lesson-name">
@@ -83,18 +75,8 @@ export default defineComponent({
       {{ lesson[1].room_number?lesson[1].room_number:'' }}
     </td> -->
     <td v-if="isAdmin">
-      <button
-        class="button"
-        @click="$emit('openModal', dayName, lesson[1].lesson_number, lesson[1])"
-      >
-        <span class="material-icons"> create </span>
-      </button>
-      <button
-        class="button"
-        @click="$emit('deleteLesson', lesson[1].id, dayName, lesson[1].lesson_number)"
-      >
-        <span class="material-icons">delete</span>
-      </button>
+      <EditLessonButton :day-name="dayName" :lesson="lesson[1]" />
+      <DeleteLessonButton :day-name="dayName" :lesson="lesson[1]" />
     </td>
   </tr>
   <tr>
@@ -120,18 +102,8 @@ export default defineComponent({
       {{ lesson[2].room_number?lesson[2].room_number:'' }}
     </td> -->
     <td v-if="isAdmin">
-      <button
-        class="button"
-        @click="$emit('openModal', dayName, lesson[2].lesson_number, lesson[2])"
-      >
-        <span class="material-icons"> create </span>
-      </button>
-      <button
-        class="button"
-        @click="$emit('deleteLesson', lesson[2].id, dayName, lesson[2].lesson_number)"
-      >
-        <span class="material-icons">delete</span>
-      </button>
+      <EditLessonButton :day-name="dayName" :lesson="lesson[2]" />
+      <DeleteLessonButton :day-name="dayName" :lesson="lesson[2]" />
     </td>
   </tr>
 </template>

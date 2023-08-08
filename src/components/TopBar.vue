@@ -4,9 +4,11 @@ import { useScheduleStore } from '@/stores/schedule'
 import { getTypeOfTheWeek } from '@/utils'
 import Modal from '@/components/Modal.vue'
 import ItemsSelection from '@/components/ItemsSelection.vue'
+import LoginButton from '@/components/buttons/LoginButton.vue'
 export default defineComponent({
   name: 'TopBar',
   components: {
+    LoginButton,
     ItemsSelection,
     Modal
   },
@@ -32,6 +34,7 @@ export default defineComponent({
     closeModal() {
       this.showModal = false
       this.isWrongPassword = false
+      this.password = ''
     }
   }
 })
@@ -39,7 +42,7 @@ export default defineComponent({
 
 <template>
   <header class="top-bar">
-    <button class="edit-button" @click="showModal = true">Редактировать</button>
+    <LoginButton @open-login-modal="this.showModal = true" />
     <Teleport to="body">
       <modal :show="showModal" @close="closeModal">
         <template #header>
@@ -126,12 +129,6 @@ export default defineComponent({
   justify-content: center;
   flex-direction: column;
   align-items: center;
-}
-
-.edit-button {
-  position: absolute;
-  top: 0;
-  right: 0;
 }
 
 .error-input {

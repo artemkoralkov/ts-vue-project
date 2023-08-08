@@ -20,9 +20,11 @@ import GroupLessonFirstGroupSecondGroupDenominator from './GroupLessonFirstGroup
 import { defineComponent } from 'vue'
 import type { PropType } from 'vue'
 import { useScheduleStore } from '@/stores/schedule'
+import CreateLessonButton from '@/components/buttons/CreateLessonButton.vue'
 export default defineComponent({
   name: 'GroupsLessonsTable',
   components: {
+    CreateLessonButton,
     TableHead,
     GroupLessonNumerator,
     GroupLessonDenominator,
@@ -76,8 +78,6 @@ export default defineComponent({
                 :lesson="lesson[0]"
                 :day-name="dayName"
                 :is-admin="scheduleStore.isAdmin"
-                @open-modal="scheduleStore.openLessonModal"
-                @delete-lesson="scheduleStore.deleteGroupLesson"
               />
             </template>
             <template v-else-if="lesson[0].denominator">
@@ -85,8 +85,6 @@ export default defineComponent({
                 :lesson="lesson[0]"
                 :day-name="dayName"
                 :is-admin="scheduleStore.isAdmin"
-                @open-modal="scheduleStore.openLessonModal"
-                @delete-lesson="scheduleStore.deleteGroupLesson"
               />
             </template>
             <template v-else>
@@ -94,8 +92,6 @@ export default defineComponent({
                 :lesson="lesson[0]"
                 :day-name="dayName"
                 :is-admin="scheduleStore.isAdmin"
-                @open-modal="scheduleStore.openLessonModal"
-                @delete-lesson="scheduleStore.deleteGroupLesson"
               />
             </template>
           </template>
@@ -106,8 +102,6 @@ export default defineComponent({
                 :lesson="lesson"
                 :day-name="dayName"
                 :is-admin="scheduleStore.isAdmin"
-                @open-modal="scheduleStore.openLessonModal"
-                @delete-lesson="scheduleStore.deleteGroupLesson"
               />
             </template>
 
@@ -123,8 +117,6 @@ export default defineComponent({
                 :lesson="lesson"
                 :day-name="dayName"
                 :is-admin="scheduleStore.isAdmin"
-                @open-modal="scheduleStore.openLessonModal"
-                @delete-lesson="scheduleStore.deleteGroupLesson"
               />
             </template>
             <template v-else-if="lesson[0].numerator && lesson[1].numerator">
@@ -132,8 +124,6 @@ export default defineComponent({
                 :lesson="lesson"
                 :day-name="dayName"
                 :is-admin="scheduleStore.isAdmin"
-                @open-modal="scheduleStore.openLessonModal"
-                @delete-lesson="scheduleStore.deleteGroupLesson"
               />
             </template>
             <template
@@ -148,8 +138,6 @@ export default defineComponent({
                 :lesson="lesson"
                 :day-name="dayName"
                 :is-admin="scheduleStore.isAdmin"
-                @open-modal="scheduleStore.openLessonModal"
-                @delete-lesson="scheduleStore.deleteGroupLesson"
               />
             </template>
             <template
@@ -165,8 +153,6 @@ export default defineComponent({
                 :lesson="lesson"
                 :day-name="dayName"
                 :is-admin="scheduleStore.isAdmin"
-                @open-modal="scheduleStore.openLessonModal"
-                @delete-lesson="scheduleStore.deleteGroupLesson"
               />
             </template>
             <!-- GroupLessonFirstGroupDenominatorSecondGroup -->
@@ -188,8 +174,6 @@ export default defineComponent({
                 :lesson="lesson"
                 :day-name="dayName"
                 :is-admin="scheduleStore.isAdmin"
-                @open-modal="scheduleStore.openLessonModal"
-                @delete-lesson="scheduleStore.deleteGroupLesson"
               />
             </template>
             <template
@@ -205,8 +189,6 @@ export default defineComponent({
                 :lesson="lesson"
                 :day-name="dayName"
                 :is-admin="scheduleStore.isAdmin"
-                @open-modal="scheduleStore.openLessonModal"
-                @delete-lesson="scheduleStore.deleteGroupLesson"
               />
             </template>
             <template
@@ -222,8 +204,6 @@ export default defineComponent({
                 :lesson="lesson"
                 :day-name="dayName"
                 :is-admin="scheduleStore.isAdmin"
-                @open-modal="scheduleStore.openLessonModal"
-                @delete-lesson="scheduleStore.deleteGroupLesson"
               />
             </template>
             <template v-else>
@@ -243,8 +223,6 @@ export default defineComponent({
                 :lesson="lesson"
                 :day-name="dayName"
                 :is-admin="scheduleStore.isAdmin"
-                @open-modal="scheduleStore.openLessonModal"
-                @delete-lesson="scheduleStore.deleteGroupLesson"
               />
             </template>
             <template
@@ -261,8 +239,6 @@ export default defineComponent({
                 :lesson="lesson"
                 :day-name="dayName"
                 :is-admin="scheduleStore.isAdmin"
-                @open-modal="scheduleStore.openLessonModal"
-                @delete-lesson="scheduleStore.deleteGroupLesson"
               />
             </template>
             <template
@@ -272,8 +248,6 @@ export default defineComponent({
                 :lesson="lesson"
                 :day-name="dayName"
                 :is-admin="scheduleStore.isAdmin"
-                @open-modal="scheduleStore.openLessonModal"
-                @delete-lesson="scheduleStore.deleteGroupLesson"
               />
             </template>
             <template
@@ -291,8 +265,6 @@ export default defineComponent({
                 :lesson="lesson"
                 :day-name="dayName"
                 :is-admin="scheduleStore.isAdmin"
-                @open-modal="scheduleStore.openLessonModal"
-                @delete-lesson="scheduleStore.deleteGroupLesson"
               />
             </template>
             <template
@@ -309,8 +281,6 @@ export default defineComponent({
                 :lesson="lesson"
                 :day-name="dayName"
                 :is-admin="scheduleStore.isAdmin"
-                @open-modal="scheduleStore.openLessonModal"
-                @delete-lesson="scheduleStore.deleteGroupLesson"
               />
             </template>
             <template
@@ -327,8 +297,6 @@ export default defineComponent({
                 :lesson="lesson"
                 :day-name="dayName"
                 :is-admin="scheduleStore.isAdmin"
-                @open-modal="scheduleStore.openLessonModal"
-                @delete-lesson="scheduleStore.deleteGroupLesson"
               />
             </template>
           </template>
@@ -337,8 +305,6 @@ export default defineComponent({
               :lesson="lesson"
               :day-name="dayName"
               :is-admin="scheduleStore.isAdmin"
-              @open-modal="scheduleStore.openLessonModal"
-              @delete-lesson="scheduleStore.deleteGroupLesson"
             />
           </template>
           <template v-else>
@@ -346,8 +312,6 @@ export default defineComponent({
               :lesson="lesson[0]"
               :day-name="dayName"
               :is-admin="scheduleStore.isAdmin"
-              @open-modal="scheduleStore.openLessonModal"
-              @delete-lesson="scheduleStore.deleteGroupLesson"
             />
           </template>
         </template>
@@ -360,9 +324,7 @@ export default defineComponent({
               <span class="lesson-name">Пропускная</span>
             </td>
             <td v-if="scheduleStore.isAdmin">
-              <button class="button" @click="scheduleStore.openLessonModal(dayName, lessonNumber)">
-                <span class="material-icons"> add </span>
-              </button>
+              <CreateLessonButton :day-name="dayName" :lesson-number="lessonNumber" />
             </td>
           </tr>
         </template>
