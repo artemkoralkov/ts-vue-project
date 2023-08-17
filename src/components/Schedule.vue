@@ -22,6 +22,10 @@ export default defineComponent({
   },
   async beforeMount() {
     await this.scheduleStore.getData()
+    const savedPassword = localStorage.getItem('password')
+    if (savedPassword) {
+      await this.scheduleStore.login(savedPassword)
+    }
   }
 })
 </script>
@@ -54,11 +58,22 @@ export default defineComponent({
 </template>
 
 <style lang="scss">
+body {
+  margin: 0;
+}
 input,
 textarea,
 select,
 button {
   font: inherit;
+}
+
+.error-input {
+  border-color: red;
+}
+
+.error {
+  color: red;
 }
 
 .container {

@@ -2,39 +2,21 @@
 import { defineComponent } from 'vue'
 import { useScheduleStore } from '@/stores/schedule'
 import { getTypeOfTheWeek } from '@/utils'
-import Modal from '@/components/Modal.vue'
 import ItemsSelection from '@/components/ItemsSelection.vue'
 import LoginButton from '@/components/buttons/LoginButton.vue'
+import LoginModal from '@/components/LoginModal.vue'
 export default defineComponent({
   name: 'TopBar',
   components: {
+    LoginModal,
     LoginButton,
-    ItemsSelection,
-    Modal
+    ItemsSelection
   },
   data() {
     return {
       scheduleStore: useScheduleStore(),
       typeOfTheWeek: getTypeOfTheWeek(),
-      showModal: false,
-      password: '',
-      isWrongPassword: false
-    }
-  },
-  methods: {
-    async login() {
-      await this.scheduleStore.login(this.password)
-      if (this.scheduleStore.currentUser) {
-        this.showModal = false
-      } else {
-        this.isWrongPassword = true
-      }
-      this.password = ''
-    },
-    closeModal() {
-      this.showModal = false
-      this.isWrongPassword = false
-      this.password = ''
+      showModal: false
     }
   }
 })
@@ -43,20 +25,7 @@ export default defineComponent({
 <template>
   <header class="top-bar">
     <LoginButton @open-login-modal="this.showModal = true" />
-    <Teleport to="body">
-      <modal :show="showModal" @close="closeModal">
-        <template #header>
-          <h3>Введите пароль</h3>
-        </template>
-        <template #body>
-          <input id="password" v-model="password" :class="{ 'error-input': isWrongPassword }" />
-          <label v-if="isWrongPassword" id="error" for="password">Неверный пароль</label>
-        </template>
-        <template #footer>
-          <button class="modal-default-button" @click="login">Ок</button>
-        </template>
-      </modal>
-    </Teleport>
+    <LoginModal :show-modal="this.showModal" @close-modal="this.showModal = false" />
     <select
       v-model="scheduleStore.selectedFaculty"
       class="faculty-selection"
@@ -129,13 +98,5 @@ export default defineComponent({
   justify-content: center;
   flex-direction: column;
   align-items: center;
-}
-
-.error-input {
-  border-color: red;
-}
-
-#error {
-  color: red;
 }
 </style>

@@ -1,6 +1,10 @@
 import axios from 'axios'
 
-export async function postRequest(path: string, payload: object, username: string) {
+export async function postRequest(
+  path: string,
+  payload: object,
+  username: string | undefined = undefined
+) {
   const config = {
     headers: {
       username: username

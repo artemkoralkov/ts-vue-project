@@ -140,6 +140,7 @@ export default defineComponent({
               class="form-group__textarea"
               id="lesson-name"
               placeholder="Введите текст"
+              autofocus
               :class="{ 'errored-input': isLessonNameErrored }"
               v-model="lessonName"
             />
@@ -188,6 +189,10 @@ export default defineComponent({
           <h3>Периодичность пары</h3>
           <fieldset class="form-group lesson-radio">
             <div>
+              <input type="radio" id="permanent" value="permanent" v-model="lessonWeek" />
+              <label for="permanent">Постоянная</label>
+            </div>
+            <div>
               <input type="radio" id="numerator" value="numerator" v-model="lessonWeek" />
               <label for="numerator">Числитель</label>
             </div>
@@ -198,6 +203,10 @@ export default defineComponent({
           </fieldset>
           <h3>Подгруппы</h3>
           <fieldset class="form-group lesson-radio">
+            <div>
+              <input type="radio" id="all-group" value="all_group" v-model="subgroup" />
+              <label for="all-group">Вся группа</label>
+            </div>
             <div>
               <input type="radio" id="first-group" value="first_group" v-model="subgroup" />
               <label for="first-group">Первая подгруппа</label>

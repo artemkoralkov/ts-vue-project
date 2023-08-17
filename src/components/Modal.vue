@@ -4,6 +4,13 @@ export default defineComponent({
   props: {
     show: Boolean
   },
+  created() {
+    document.addEventListener('keyup', (event) => {
+      if (event.key === 'Escape') {
+        this.$emit('close')
+      }
+    })
+  },
   emits: ['close']
 })
 </script>

@@ -13,8 +13,8 @@ export const useScheduleStore = defineStore('schedule', {
         'ТБФ (технология)': 'tbft',
         ДиНО: 'dino'
       },
-      path: 'http://127.0.0.1:8000',
-      // path: 'https://mspu-schedule-server.onrender.com',
+      // path: 'http://127.0.0.1:8000',
+      path: 'https://mspu-schedule-server.onrender.com',
       allTeachers: [] as Teacher[],
       allGroups: [] as Group[],
       groups: [] as Group[],
@@ -154,6 +154,9 @@ export const useScheduleStore = defineStore('schedule', {
 
     async login(password: string) {
       this.currentUser = await postRequest(`${this.path}/users/login`, { password })
+      if (this.currentUser) {
+        localStorage.setItem('password', password)
+      }
       this.isAdmin = this.isAdminAllowed()
     },
 
