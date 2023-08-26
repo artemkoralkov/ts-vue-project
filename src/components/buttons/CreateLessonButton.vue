@@ -2,9 +2,11 @@
 import { defineComponent } from 'vue'
 import { useScheduleStore } from '@/stores/schedule'
 import type { PropType } from 'vue'
+import ResizableIcon from '@/components/icons/ResizableIcon.vue'
 
 export default defineComponent({
   name: 'CreateLessonButton',
+  components: { ResizableIcon },
   data() {
     return {
       scheduleStore: useScheduleStore()
@@ -26,7 +28,7 @@ export default defineComponent({
 
 <template>
   <button class="button" @click="this.scheduleStore.openLessonModal(dayName, lessonNumber)">
-    <span class="material-icons"> add </span>
+    <ResizableIcon :icon-name="'add'" />
   </button>
 </template>
 
