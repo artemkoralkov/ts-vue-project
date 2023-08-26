@@ -21,6 +21,7 @@ export default defineComponent({
   methods: {
     closeModal() {
       this.$emit('closeModal')
+      document.body.style.overflow = ''
       this.isWrongPassword = false
       this.password = ''
     },
@@ -40,11 +41,6 @@ export default defineComponent({
       if (event.key === 'Enter' && this.showModal) {
         this.login()
       }
-    })
-  },
-  updated() {
-    this.$nextTick(() => {
-      this.$refs.modalInput.focus()
     })
   }
 })

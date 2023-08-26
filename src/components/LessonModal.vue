@@ -51,12 +51,12 @@ export default defineComponent({
         ? 'numerator'
         : this.previousLesson?.denominator
         ? 'denominator'
-        : '',
+        : 'permanent',
       subgroup: this.previousLesson?.first_group
         ? 'first_group'
         : this.previousLesson?.second_group
         ? 'second_group'
-        : '',
+        : 'all_group',
       lessonName: this.previousLesson?.lesson_title || '',
       teacherToSendLesson: this.previousLesson?.teacher_name || '',
       groupToSendLesson: this.previousLesson?.group_name || '',

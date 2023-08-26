@@ -18,13 +18,19 @@ export default defineComponent({
       typeOfTheWeek: getTypeOfTheWeek(),
       showModal: false
     }
+  },
+  methods: {
+    openLoginModal() {
+      document.body.style.overflow = 'hidden'
+      this.showModal = true
+    }
   }
 })
 </script>
 
 <template>
   <header class="top-bar">
-    <LoginButton @open-login-modal="this.showModal = true" />
+    <LoginButton @open-login-modal="openLoginModal" />
     <LoginModal :show-modal="this.showModal" @close-modal="this.showModal = false" />
     <select
       v-model="scheduleStore.selectedFaculty"
