@@ -59,7 +59,7 @@ export default defineComponent({
 <style scoped>
 .search {
   width: 25%;
-  min-height: 30px;
+  min-height: 24px;
   min-width: 130px;
   border-radius: 5px;
 }
