@@ -1,4 +1,7 @@
 ﻿<script lang="ts">
+import { defineComponent } from 'vue'
+import type { PropType } from 'vue'
+import { useScheduleStore } from '@/stores/schedule'
 import TableHead from '../TableHead.vue'
 import GroupLessonNumerator from './GroupLessonNumerator.vue'
 import GroupLessonDenominator from './GroupLessonDenominator.vue'
@@ -17,9 +20,8 @@ import GroupLessonFirstGroupDenominatorSecondGroup from './GroupLessonFirstGroup
 import GroupLessonFirstGroupDenominatorSecondGroupNumeratorDenominator from './GroupLessonFirstGroupDenominatorSecondGroupNumeratorDenominator.vue'
 import GroupLessonFirstGroupSecondGroupNumerator from './GroupLessonFirstGroupSecondGroupNumerator.vue'
 import GroupLessonFirstGroupSecondGroupDenominator from './GroupLessonFirstGroupSecondGroupDenominator.vue'
-import { defineComponent } from 'vue'
-import type { PropType } from 'vue'
-import { useScheduleStore } from '@/stores/schedule'
+import GroupLessonFirstGroup from '@/components/GroupsLessons/GroupLessonFirstGroup.vue'
+import GroupLessonSecondGroup from '@/components/GroupsLessons/GroupLessonSecondGroup.vue'
 import CreateLessonButton from '@/components/buttons/CreateLessonButton.vue'
 export default defineComponent({
   name: 'GroupsLessonsTable',
@@ -34,6 +36,8 @@ export default defineComponent({
     GroupLessonNumeratorWithGroups,
     GroupLessonDenominatorWithGroups,
     GroupLessonNumeratorDenominatorWithGroups,
+    GroupLessonFirstGroup,
+    GroupLessonSecondGroup,
     GroupLessonFirstGroupNumeratorSecondGroupNumerator,
     GroupLessonFirstGroupDenominatorSecondGroupDenominator,
     GroupLessonFirstGroupNumeratorDenominatorSecondGroup,
@@ -82,6 +86,20 @@ export default defineComponent({
             </template>
             <template v-else-if="lesson[0].denominator">
               <GroupLessonDenominator
+                :lesson="lesson[0]"
+                :day-name="dayName"
+                :is-admin="scheduleStore.isAdmin"
+              />
+            </template>
+            <template v-else-if="lesson[0].first_group">
+              <GroupLessonFirstGroup
+                :lesson="lesson[0]"
+                :day-name="dayName"
+                :is-admin="scheduleStore.isAdmin"
+              />
+            </template>
+            <template v-else-if="lesson[0].second_group">
+              <GroupLessonSecondGroup
                 :lesson="lesson[0]"
                 :day-name="dayName"
                 :is-admin="scheduleStore.isAdmin"
