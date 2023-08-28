@@ -29,8 +29,6 @@ export default defineComponent({
       <thead>
         <tr>
           <th class="table-head">№</th>
-        </tr>
-        <tr>
           <th v-for="(lesson, dayName, index) in lessons" :key="index" class="table-head">
             {{ briefRusDayNames[index] }}
           </th>

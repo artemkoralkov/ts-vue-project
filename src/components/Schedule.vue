@@ -6,9 +6,11 @@ import TeachersLessonsTable from '@/components/TeacherLessons/TeachersLessonsTab
 import TopBar from '@/components/TopBar.vue'
 import LessonModal from '@/components/LessonModal.vue'
 import { getTypeOfTheWeek } from '@/utils'
+import TeacherLessonsTableBrief from '@/components/TeacherLessonsBrief/TeacherLessonsTableBrief.vue'
 
 export default defineComponent({
   components: {
+    TeacherLessonsTableBrief,
     GroupsLessonsTable,
     TeachersLessonsTable,
     TopBar,
@@ -48,10 +50,15 @@ export default defineComponent({
         />
       </template>
       <template v-if="scheduleStore.selectedTeacher">
-        <TeachersLessonsTable
-          :lessons="scheduleStore.teachersLessons"
-          :faculty="scheduleStore.selectedFaculty"
-        />
+        <template v-if="scheduleStore.teacherLessonTableMode === 'default'">
+          <TeachersLessonsTable
+            :lessons="scheduleStore.teachersLessons"
+            :faculty="scheduleStore.selectedFaculty"
+          />
+        </template>
+        <template v-else>
+          <TeacherLessonsTableBrief :lessons="scheduleStore.teachersLessons" />
+        </template>
       </template>
     </div>
   </div>

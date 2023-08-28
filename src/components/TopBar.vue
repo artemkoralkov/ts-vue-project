@@ -90,6 +90,17 @@ export default defineComponent({
     <h2 class="centred-text">
       {{ typeOfTheWeek }}
     </h2>
+    <div v-if="scheduleStore.selectedList === 'Преподаватели' && scheduleStore.selectedTeacher">
+      <input type="radio" id="brief" value="brief" v-model="scheduleStore.teacherLessonTableMode" />
+      <label for="brief">Кратко</label>
+      <input
+        type="radio"
+        id="default"
+        value="default"
+        v-model="scheduleStore.teacherLessonTableMode"
+      />
+      <label for="default">По-умолчанию</label>
+    </div>
   </header>
 </template>
 
