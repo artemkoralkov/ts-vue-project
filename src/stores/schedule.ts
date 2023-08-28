@@ -34,7 +34,8 @@ export const useScheduleStore = defineStore('schedule', {
       lessonFor: '',
       previousLesson: {} as Lesson | undefined,
       dayName: '' as Day,
-      lessonNumber: 0
+      lessonNumber: 0,
+      teacherLessonTableMode: 'default'
     }
   },
 
@@ -183,6 +184,7 @@ export const useScheduleStore = defineStore('schedule', {
     },
 
     openLessonModal(dayName: Day, lessonNumber: number, lesson: Lesson | undefined = undefined) {
+      document.body.style.overflow = 'hidden'
       this.lessonFor =
         this.selectedList === 'Преподаватели' ? this.selectedTeacher : this.selectedGroup
       this.dayName = dayName
@@ -191,6 +193,7 @@ export const useScheduleStore = defineStore('schedule', {
       this.showModal = true
     },
     closeLessonModal() {
+      document.body.style.overflow = ''
       this.showModal = false
     }
   }

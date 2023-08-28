@@ -58,7 +58,7 @@ export default defineComponent({
 
 <style scoped>
 .search {
-  width: 25%;
+  width: 50%;
   min-height: 24px;
   min-width: 130px;
   border-radius: 5px;
