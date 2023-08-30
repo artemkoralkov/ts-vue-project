@@ -31,7 +31,7 @@ export default defineComponent({
     <td>
       <span class="lesson-name">
         {{ lesson.lesson_title }}
-        <template v-if="lesson[0].lesson_type"> ({{ lesson.lesson_type }}) </template>
+        <template v-if="lesson.lesson_type"> ({{ lesson.lesson_type }}) </template>
       </span>
       <p class="line-break">первая подгруппа</p>
       <p class="teacher-name line-break">
