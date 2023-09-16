@@ -59,8 +59,6 @@ export default defineComponent({
     </td> -->
     <td v-if="isAdmin" class="right-border">
       <EditLessonButton :day-name="dayName" :lesson="lesson[0]" />
-    </td>
-    <td>
       <DeleteLessonButton :day-name="dayName" :lesson="lesson[0]" />
     </td>
     <td>
@@ -86,8 +84,6 @@ export default defineComponent({
     </td> -->
     <td v-if="isAdmin">
       <EditLessonButton :day-name="dayName" :lesson="lesson[1]" />
-    </td>
-    <td>
       <DeleteLessonButton :day-name="dayName" :lesson="lesson[1]" />
     </td>
   </tr>
