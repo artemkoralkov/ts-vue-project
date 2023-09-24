@@ -32,7 +32,7 @@ export default defineComponent({
     <td colspan="3">
       <span class="lesson-name">
         {{ lesson.lesson_title }}
-        <template v-if="lesson.lesson_type"> ({{ lesson.lesson_type }}) </template>
+        <template v-if="lesson.lesson_type"> {{ lesson.lesson_type }} </template>
       </span>
       <p class="line-break">
         {{
