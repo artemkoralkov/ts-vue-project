@@ -77,19 +77,15 @@ export default defineComponent({
         @select-item="scheduleStore.selectGroup"
       />
     </template>
-    <template v-if="scheduleStore.selectedGroup">
-      <h1 class="centred-text">
-        {{ scheduleStore.selectedGroup }}
-      </h1>
-    </template>
-    <template v-else-if="scheduleStore.selectedTeacher">
-      <h1 class="centred-text">
-        {{ scheduleStore.selectedTeacher }}
-      </h1>
-    </template>
-    <h2 class="centred-text">
+    <h3
+      v-if="scheduleStore.selectedGroup || scheduleStore.selectedTeacher"
+      class="centred-text selected-entity"
+    >
+      {{ scheduleStore.selectedGroup || scheduleStore.selectedTeacher }}
+    </h3>
+    <h3 class="centred-text selected-entity">
       {{ typeOfTheWeek }}
-    </h2>
+    </h3>
     <div v-if="scheduleStore.selectedList === 'Преподаватели' && scheduleStore.selectedTeacher">
       <input type="radio" id="brief" value="brief" v-model="scheduleStore.teacherLessonTableMode" />
       <label for="brief">Кратко</label>
@@ -115,5 +111,8 @@ export default defineComponent({
   justify-content: center;
   flex-direction: column;
   align-items: center;
+}
+.selected-entity {
+  margin: 5px;
 }
 </style>

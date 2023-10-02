@@ -63,7 +63,7 @@ export default defineComponent({
       isLessonNameErrored: false,
       isGroupNameErrored: false,
       isTeacherNameErrored: false,
-      lessonTypes: ['лк', 'лб', 'лз', 'пз', 'пр', 'см']
+      lessonTypes: ['(лк)', '(лб)', '(лз)', '(пз)', '(пр)', '(см)']
     }
   },
   updated() {

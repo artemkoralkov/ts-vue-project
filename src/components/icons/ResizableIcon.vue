@@ -21,7 +21,7 @@ span.icon-style {
     font-variation-settings: 'OPSZ' 40;
   }
 
-  @media (max-width: 400px) {
+  @media (max-width: 450px) {
     font-size: 20px;
     font-variation-settings: 'OPSZ' 20;
   }

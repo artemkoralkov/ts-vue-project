@@ -62,8 +62,13 @@ export default defineComponent({
     width: 400px;
   }
 
-  @media (max-width: 400px) {
+  @media (max-width: 450px) {
     font-size: 80%;
+    width: 250px;
+  }
+
+  @media (max-height: 600px) {
+    font-size: 100%;
     width: 250px;
   }
 }
