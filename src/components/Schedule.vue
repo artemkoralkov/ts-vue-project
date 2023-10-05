@@ -94,7 +94,7 @@ button {
     font-size: 80%;
   }
 
-  @media (max-height: 600px) {
+  @media (max-height: 768px) {
     font-size: 100%;
   }
 }
