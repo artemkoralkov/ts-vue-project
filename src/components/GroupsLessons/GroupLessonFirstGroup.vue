@@ -45,7 +45,7 @@ export default defineComponent({
       <EditLessonButton :day-name="dayName" :lesson="lesson" />
       <DeleteLessonButton :day-name="dayName" :lesson="lesson" />
     </td>
-    <td colspan="3">
+    <td>
       <span class="lesson-name">Пропускная</span>
     </td>
     <td v-if="isAdmin">
