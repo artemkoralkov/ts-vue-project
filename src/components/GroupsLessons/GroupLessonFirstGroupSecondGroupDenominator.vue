@@ -49,7 +49,7 @@ export default defineComponent({
     <!-- <td>
       {{ lesson[0].room_number?lesson[0].room_number:'' }}
     </td> -->
-    <td v-if="isAdmin" class="right-border">
+    <td v-if="isAdmin" rowspan="2" class="right-border">
       <EditLessonButton :day-name="dayName" :lesson="lesson[0]" />
       <DeleteLessonButton :day-name="dayName" :lesson="lesson[0]" />
     </td>
