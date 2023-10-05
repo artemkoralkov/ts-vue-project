@@ -67,7 +67,7 @@ export default defineComponent({
     width: 250px;
   }
 
-  @media (max-height: 600px) {
+  @media (max-height: 768px) {
     font-size: 100%;
     width: 250px;
   }
