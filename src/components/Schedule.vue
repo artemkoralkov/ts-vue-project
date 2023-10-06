@@ -90,11 +90,11 @@ button {
     font-size: 150%;
   }
 
-  @media (max-width: 450px) {
+  @media (max-height: 768px) {
     font-size: 80%;
   }
 
-  @media (max-height: 768px) {
+  @media (max-width: 450px) {
     font-size: 100%;
   }
 }
