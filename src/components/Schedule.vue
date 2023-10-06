@@ -91,11 +91,11 @@ button {
   }
 
   @media screen and (max-height: 768px) {
-    font-size: 80%;
+    font-size: 100%;
   }
 
   @media (max-width: 450px) {
-    font-size: 100%;
+    font-size: 80%;
   }
 }
 
