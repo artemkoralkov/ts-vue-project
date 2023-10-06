@@ -90,7 +90,7 @@ button {
     font-size: 150%;
   }
 
-  media screen and (max-height: 768px) {
+  @media screen and (max-height: 768px) {
     font-size: 80%;
   }
 
