@@ -15,7 +15,7 @@ const monthNames = [
   'декабря'
 ]
 
-const rusDayNames = ['Вс.', 'Пн.', 'Вт.', 'Ср.', 'Чт.', 'Пт.', 'Сб']
+const rusDayNames = ['Вс.', 'Пн.', 'Вт.', 'Ср.', 'Чт.', 'Пт.', 'Сб.']
 
 const engDayNames = moment.weekdays()
 
