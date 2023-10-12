@@ -70,6 +70,7 @@ export const useScheduleStore = defineStore('schedule', {
       this.selectedGroup = ''
       this.searchTerm = ''
       window.scrollTo(0, 0)
+      this.isAdmin = this.isAdminAllowed()
     },
 
     async selectGroup(group_name: string) {
@@ -80,6 +81,7 @@ export const useScheduleStore = defineStore('schedule', {
       this.selectedTeacher = ''
       this.searchTerm = ''
       window.scrollTo(0, 0)
+      this.isAdmin = this.isAdminAllowed()
     },
 
     selectFaculty() {
